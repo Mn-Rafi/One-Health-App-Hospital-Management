@@ -53,7 +53,7 @@ class ScreenSigninOrRegister extends StatelessWidget {
                   child: BlocConsumer<WelcomescreenCubit, WelcomescreenState>(
                     listener: (context, state) {
                       if (state is WelcomeScreenNavLoadSIgnIn) {
-                        Future.delayed(const Duration(milliseconds: 200))
+                        Future.delayed(const Duration(milliseconds: 100))
                             .then((value) {
                           Navigator.push(
                               context,
@@ -64,8 +64,12 @@ class ScreenSigninOrRegister extends StatelessWidget {
                         });
                       }
                       if (state is WelcomeScreenNavLoadRegister) {
-                        Future.delayed(const Duration(milliseconds: 200))
+                        Future.delayed(const Duration(milliseconds: 100))
                             .then((value) {
+                          Screenregister.bloodGroupController.text = '';
+                          Screenregister.ageController.text = '';
+                          Screenregister.firstNameController.text = '';
+                          Screenregister.secondNameController.text = '';
                           Navigator.push(
                               context,
                               PageTransition(

@@ -26,3 +26,25 @@ class CustomImageCard extends StatelessWidget {
     );
   }
 }
+
+class CustomCircularImageCard extends StatelessWidget {
+  final String imagePath;
+  final double? radius;
+  const CustomCircularImageCard({
+    Key? key,
+    required this.imagePath,
+    this.radius,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: const CircleBorder(),
+      elevation: 5,
+      child: CircleAvatar(
+        radius: radius ?? 30.w,
+        backgroundImage: Image.asset(imagePath).image,
+      ),
+    );
+  }
+}
