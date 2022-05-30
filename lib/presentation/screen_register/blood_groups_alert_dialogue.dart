@@ -37,7 +37,7 @@ class BloodGroupAlertBox extends StatelessWidget {
                   maxHeight: MediaQuery.of(context).size.height * 0.4,
                 ),
                 child: ListView.builder(
-                    shrinkWrap: true,
+                    shrinkWrap: false,
                     itemCount: BloodGroupAlertBox.bloodGroups.length,
                     itemBuilder: (BuildContext context, int index) {
                       return RadioListTile<BloodGroup>(
