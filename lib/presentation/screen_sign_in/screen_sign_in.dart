@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:one_health_hospital_app/logic/bloc_login_api/loginapi_bloc.dart';
 import 'package:one_health_hospital_app/logic/cubit_welcome_screen/welcomescreen_cubit.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_image_card.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_submit_button.dart';
 import 'package:one_health_hospital_app/presentation/screen_register/screen_register.dart';
+import 'package:one_health_hospital_app/presentation/screen_register/screen_register_two.dart';
+import 'package:one_health_hospital_app/presentation/screen_sign_in_with_otp/screen_sign_in_with_otp.dart';
+import 'package:one_health_hospital_app/presentation/screen_signin_or_register/screen_signin_or_register.dart';
+import 'package:one_health_hospital_app/repositories/connectivity_services/connectivity_services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:one_health_hospital_app/logic/cubit_signin_first/signinfirst_cubit.dart';
 import 'package:one_health_hospital_app/logic/validation_mixin/vaidator_mixin.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_textformfield.dart';
-import 'package:one_health_hospital_app/presentation/screen_signin_or_register/screen_signin_or_register.dart';
 import 'package:one_health_hospital_app/themedata.dart';
 
 class ScreenSignIn extends StatelessWidget {
@@ -45,16 +49,11 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pushAndRemoveUntil(
-          context,
-          PageTransition(
-              child: const ScreenSigninOrRegister(),
-              type: PageTransitionType.leftToRight,
-              alignment: Alignment.center),
-          (route) => false,
-        ).then((value) => context.read<WelcomescreenCubit>().backtoScreen());
-
-        return true;
+        context
+            .read<LoginapiBloc>()
+            .add(LoginapiinitialEvent(email: '', password: ''));
+        Navigator.pop(context);
+        return false;
       },
       child: Scaffold(
         body: SafeArea(
@@ -105,7 +104,25 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.w),
-                      child: BlocBuilder<SigninfirstCubit, SigninfirstState>(
+                      child: BlocConsumer<SigninfirstCubit, SigninfirstState>(
+                        listener: (context, state) {
+                          if (state is NavigatetoRegisterScreen) {
+                            Navigator.pushReplacement(
+                                context,
+                                PageTransition(
+                                    child: const Screenregister(),
+                                    type: PageTransitionType.rightToLeft));
+                          }
+                          if (state is NavigatetoOtpLoginScreen) {
+                            ScreenSignInwithOtp.mobileNumberController.text =
+                                '';
+                            Navigator.pushReplacement(
+                                context,
+                                PageTransition(
+                                    child: ScreenSignInwithOtp(),
+                                    type: PageTransitionType.rightToLeft));
+                          }
+                        },
                         builder: (context, state) {
                           return CustomTextFormField(
                               suffixAction: () {
@@ -142,19 +159,51 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (firstTap) {
-                            if (_formKey.currentState!.validate()) {
-                              // print('True Ahhn Ath');
-                              firstTap = false;
-                            } else {
-                              // print('ADA>> DETILS THETTIYEEEEEE');
-                            }
+                      child: BlocConsumer<LoginapiBloc, LoginapiState>(
+                        listener: (context, state) {
+                          if (state is LoginapiNoInternetState) {
+                            showSnackBar(
+                                text: 'No internetconnection found',
+                                context: context,
+                                duration: 2000);
+                          }
+                          if (state is LoginapiLoadedState) {
+                            showSnackBar(
+                                text: state.user.firstName, context: context);
+                          }
+                          if (state is LoginapiErrorState) {
+                            showSnackBar(text: state.message, context: context);
+                          }
+                          if (state is LoginapiLoadState) {
+                            firstTap = true;
+                            showSnackBar(
+                                text: 'Checking details', context: context);
                           }
                         },
-                        child: CustomSubmitButton(
-                            bgColor: Color(0xff5593b7), text: 'SIGN IN'),
+                        builder: (context, state) {
+                          if (state is LoginapiLoadState) {
+                            return const CustomLoadingSubmitButton(
+                                bgColor: Colors.deepPurple, text: 'SIGN IN');
+                          } else {
+                            return GestureDetector(
+                              onTap: () {
+                                if (firstTap) {
+                                  if (_formKey.currentState!.validate()) {
+                                    print('front-end validation completed');
+                                    context.read<LoginapiBloc>().add(
+                                        LoginapiinitialEvent(
+                                            email: emailController.text,
+                                            password: passwordController.text));
+                                    print('Loading State');
+                                    firstTap = false;
+                                  }
+                                }
+                              },
+                              child: const CustomSubmitButton(
+                                  bgColor: Colors.deepPurple, text: 'SIGN IN'),
+                            );
+                          }
+                        },
                       ),
                     ),
                     SizedBox(
@@ -194,16 +243,11 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                       padding:
                           EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
                       child: GestureDetector(
-                        // onTap: () {
-                        //   if (firstTap) {
-                        //     if (_formKey.currentState!.validate()) {
-                        //       // print('True Ahhn Ath');
-                        //       firstTap = false;
-                        //     } else {
-                        //       // print('ADA>> DETILS THETTIYEEEEEE');
-                        //     }
-                        //   }
-                        // },
+                        onTap: () {
+                          context
+                              .read<SigninfirstCubit>()
+                              .navigateToOtpScreen();
+                        },
                         child: const CustomSubmitButton(
                             bgColor: Color.fromARGB(255, 150, 40, 60),
                             text: 'SIGN IN WITH OTP'),
@@ -222,12 +266,9 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      PageTransition(
-                                          child: const Screenregister(),
-                                          type:
-                                              PageTransitionType.rightToLeft));
+                                  context
+                                      .read<SigninfirstCubit>()
+                                      .navigateToRegister();
                                 },
                                 child: Text('Register now',
                                     style: GoogleFonts.ubuntu(

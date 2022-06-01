@@ -7,3 +7,6 @@ class PasswordHide extends SigninfirstState {}
 
 class PasswordShow extends SigninfirstState{}
 
+class NavigatetoRegisterScreen extends SigninfirstState{} 
+
+class NavigatetoOtpLoginScreen extends SigninfirstState{} 

@@ -20,7 +20,7 @@ class ScreenSplash extends StatelessWidget {
             Navigator.pushReplacement(
                 context,
                 PageTransition(
-                    child: const ScreenSigninOrRegister(),
+                    child: ScreenSigninOrRegister(),
                     type: PageTransitionType.rightToLeft,
                     alignment: Alignment.center));
           }

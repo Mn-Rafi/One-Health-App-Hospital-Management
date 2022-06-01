@@ -17,6 +17,26 @@ bool isLightTheme(BuildContext context) {
   return isLighttheme;
 }
 
+showSnackBar(
+    {required String text, required BuildContext context, int? duration}) {
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+  final SnackBar snackBar = SnackBar(
+    content: Text(text),
+    duration: Duration(milliseconds: duration ?? 600),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+final List<String> imageList = [
+  'images/add_image_icon.png',
+  'images/circle_avatar.jpg',
+  'images/gender_icon.png',
+  'images/one_health_logo.png',
+  'images/sign_with_otp.jpg',
+  'images/signin_or_register.jpg',
+  'images/signin.jpg'
+];
+
 final kDefaultPaddingheight = 4.h;
 final kDefaultPaddingwidth = 7.w;
 const BoxDecoration kboxdecoration = BoxDecoration(

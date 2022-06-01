@@ -53,29 +53,29 @@ class ScreenSigninOrRegister extends StatelessWidget {
                   child: BlocConsumer<WelcomescreenCubit, WelcomescreenState>(
                     listener: (context, state) {
                       if (state is WelcomeScreenNavLoadSIgnIn) {
-                        Future.delayed(const Duration(milliseconds: 100))
+                        Future.delayed(const Duration(milliseconds: 50))
                             .then((value) {
+                          ScreenSigninOrRegister.colorCount = 0;
                           Navigator.push(
                               context,
                               PageTransition(
                                   child: const ScreenSignIn(),
                                   type: PageTransitionType.rightToLeft,
                                   alignment: Alignment.center));
+                          context.read<WelcomescreenCubit>().intialState();
                         });
                       }
                       if (state is WelcomeScreenNavLoadRegister) {
-                        Future.delayed(const Duration(milliseconds: 100))
+                        Future.delayed(const Duration(milliseconds: 50))
                             .then((value) {
-                          Screenregister.bloodGroupController.text = '';
-                          Screenregister.ageController.text = '';
-                          Screenregister.firstNameController.text = '';
-                          Screenregister.secondNameController.text = '';
+                          ScreenSigninOrRegister.colorCount = 0;
                           Navigator.push(
                               context,
                               PageTransition(
                                   child: const Screenregister(),
                                   type: PageTransitionType.rightToLeft,
                                   alignment: Alignment.center));
+                          context.read<WelcomescreenCubit>().intialState();
                         });
                       }
                     },

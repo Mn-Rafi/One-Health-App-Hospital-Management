@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:one_health_hospital_app/presentation/screen_register/screen_register.dart';
 
-enum BloodGroup { one, two, three, four, five, six, seven, eight }
+enum Gender { one, two, three, four, five, six, seven, eight }
 
-class BloodGroupAlertBox extends StatelessWidget {
-  BloodGroupAlertBox({Key? key}) : super(key: key);
+class GenderAlertBox extends StatelessWidget {
+  GenderAlertBox({Key? key}) : super(key: key);
 
-  static List<String> bloodGroups = [
-    'A +ve',
-    'B +ve',
-    'O +ve',
-    'AB +ve',
-    'A -ve',
-    'B -ve',
-    'O -ve',
-    'AB -ve'
+  static List<String> genders = [
+    'Female',
+    'Male',
+    'Other',
   ];
 
-  BloodGroup? bloodGroupSelect = BloodGroup.one;
+  Gender? genderSelect = Gender.one;
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +33,16 @@ class BloodGroupAlertBox extends StatelessWidget {
                 ),
                 child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: BloodGroupAlertBox.bloodGroups.length,
+                    itemCount: GenderAlertBox.genders.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return RadioListTile<BloodGroup>(
-                          title: Text(BloodGroupAlertBox.bloodGroups[index]),
-                          value: BloodGroup.values[index],
-                          groupValue: bloodGroupSelect,
-                          onChanged: (BloodGroup? value) {
-                            bloodGroupSelect = value;
-                            RegisterScreenBody.bloodGroupController.text =
-                                BloodGroupAlertBox
-                                    .bloodGroups[bloodGroupSelect!.index];
+                      return RadioListTile<Gender>(
+                          title: Text(GenderAlertBox.genders[index]),
+                          value: Gender.values[index],
+                          groupValue: genderSelect,
+                          onChanged: (Gender? value) {
+                            genderSelect = value;
+                            RegisterScreenBody.genderController.text =
+                                GenderAlertBox.genders[genderSelect!.index];
                             Navigator.pop(context);
                           });
                     }),

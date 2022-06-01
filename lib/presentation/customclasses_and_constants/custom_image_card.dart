@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -30,10 +32,12 @@ class CustomImageCard extends StatelessWidget {
 class CustomCircularImageCard extends StatelessWidget {
   final String imagePath;
   final double? radius;
+  final String? fileImagePath;
   const CustomCircularImageCard({
     Key? key,
     required this.imagePath,
     this.radius,
+    this.fileImagePath,
   }) : super(key: key);
 
   @override
@@ -43,7 +47,9 @@ class CustomCircularImageCard extends StatelessWidget {
       elevation: 5,
       child: CircleAvatar(
         radius: radius ?? 30.w,
-        backgroundImage: Image.asset(imagePath).image,
+        backgroundImage: fileImagePath == null
+            ? Image.asset(imagePath).image
+            : FileImage(File(fileImagePath!)),
       ),
     );
   }

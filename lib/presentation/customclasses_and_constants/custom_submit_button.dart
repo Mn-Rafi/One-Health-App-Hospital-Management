@@ -29,3 +29,32 @@ class CustomSubmitButton extends StatelessWidget {
     );
   }
 }
+
+class CustomLoadingSubmitButton extends StatelessWidget {
+  final String text;
+  final Color bgColor;
+  const CustomLoadingSubmitButton({
+    Key? key,
+    required this.text,
+    required this.bgColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      width: 50.w,
+      height: 6.h,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2.w),
+        color: bgColor,
+      ),
+      child: SizedBox(
+          height: 2.5.h,
+          width: 2.5.h,
+          child: const CircularProgressIndicator(
+            color: Colors.white,
+          )),
+    );
+  }
+}

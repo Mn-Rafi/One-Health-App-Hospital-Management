@@ -13,6 +13,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscure;
   final VoidCallback? suffixAction;
   final TextInputAction? nextAction;
+  final TextCapitalization? textCapitalisation;
   const CustomTextFormField({
     Key? key,
     this.validator,
@@ -23,6 +24,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscure = false,
     this.suffixAction,
     this.nextAction,
+    this.textCapitalisation,
     required this.textController,
   }) : super(key: key);
 
@@ -31,6 +33,7 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textCapitalization: textCapitalisation ?? TextCapitalization.none,
       textInputAction: nextAction ?? TextInputAction.next,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: obscure,
@@ -100,6 +103,7 @@ class CustomSmallTextFormField extends StatelessWidget {
       textInputAction: nextAction ?? TextInputAction.next,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: obscure,
+      maxLength: 3,
       enabled: isEnabled ?? true,
       controller: textController,
       keyboardType: keyBoardType,
@@ -107,6 +111,7 @@ class CustomSmallTextFormField extends StatelessWidget {
       keyboardAppearance: Brightness.dark,
       style: GoogleFonts.ubuntu(color: Colors.black),
       decoration: InputDecoration(
+        counterText: '',
         prefixIcon: Icon(
           iconData,
           size: 17.sp,
