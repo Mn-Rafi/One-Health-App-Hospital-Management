@@ -19,11 +19,9 @@ class LoginapiBloc extends Bloc<LoginapiEvent, LoginapiState> {
   ) : super(LoginapiLoading()) {
     _connectivityServices.connectivityStream.stream.listen((event) {
       if (event == ConnectivityResult.none) {
-        // print('No internet connection');
         add(LoginapiNoInternetEvent());
       } else {
         add(LoginapieventEvent());
-        // print('Internet is fine');
       }
     });
     on<LoginapiNoInternetEvent>((event, emit) {
@@ -34,20 +32,58 @@ class LoginapiBloc extends Bloc<LoginapiEvent, LoginapiState> {
     });
     on<LoginapiinitialEvent>((event, emit) async {
       emit(LoginapiLoadState());
-
       try {
-        final UserLoginResponseModel? response = await _userLoginServices
+        final Response responseFrom = await _userLoginServices
             .getUserResponseData(email: event.email, password: event.password);
-        emit(LoginapiLoadedState(
-            user: response!.user,
-            token: response.token,
-            message: response.message));
+        if (responseFrom.statusCode == 200) {
+          final response = userLoginResponseModelFromJson(responseFrom.data);
+          emit(LoginapiLoadedState(
+              user: response.user,
+              token: response.token,
+              message: response.message));
+        } else {
+          throw DioError;
+        }
       } catch (e) {
-        print('Other Error');
-        emit(LoginapiNoInternetState());
-        print(e);
         if (e is DioError) {
           emit(LoginapiErrorState(message: e.response!.data["message"]));
+        }
+      }
+    });
+    on<RequestOtp>((event, emit) async {
+      emit(RequestOtpState());
+      try {
+        final Response responseFrom =
+            await _userLoginServices.requestOtp(number: event.number);
+        if (responseFrom.statusCode == 200) {
+          emit(RequestOtpSuccessState(message: 'Successfully send otp'));
+        } else {
+          throw DioError;
+        }
+      } catch (e) {
+        if (e is DioError) {
+          emit(RequestapiErrorState(message: e.response!.data["message"]));
+        }
+      }
+    });
+    on<VerifyOtp>((event, emit) async {
+      emit(VerifyOtpState());
+      try {
+        final Response responseFrom = await _userLoginServices.verifyOtp(
+            mobileNumber: event.number, otp: event.otp);
+        if (responseFrom.statusCode == 200) {
+          final response = userLoginResponseModelFromJson(responseFrom.data);
+          emit(VerifyOtpSuccessState(
+            user: response.user,
+            token: response.token,
+            message: response.message,
+          ));
+        } else {
+          throw DioError;
+        }
+      } catch (e) {
+        if (e is DioError) {
+          emit(VerifyOTPfailedState(message: e.response!.data["message"]));
         }
       }
     });

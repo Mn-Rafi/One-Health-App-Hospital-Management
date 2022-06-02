@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,11 +30,13 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
       if (croppedImage != null) {
         imagePath = croppedImage.path;
+        RegisterScreenBody.fileImage = File(croppedImage.path);
       } else {
         imagePath = image.path;
+        RegisterScreenBody.fileImage = File(image.path);
       }
     }
-    RegisterScreenBody.fleImagePath = image?.path;
+    RegisterScreenBody.fleImagePath = imagePath;
 
     emit(PickImageEnd(fileImagePath: imagePath));
   }

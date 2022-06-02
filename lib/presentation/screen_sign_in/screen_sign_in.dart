@@ -169,7 +169,7 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                           }
                           if (state is LoginapiLoadedState) {
                             showSnackBar(
-                                text: state.user.firstName, context: context);
+                                text: state.message, context: context);
                           }
                           if (state is LoginapiErrorState) {
                             showSnackBar(text: state.message, context: context);
@@ -189,12 +189,10 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                               onTap: () {
                                 if (firstTap) {
                                   if (_formKey.currentState!.validate()) {
-                                    print('front-end validation completed');
                                     context.read<LoginapiBloc>().add(
                                         LoginapiinitialEvent(
                                             email: emailController.text,
                                             password: passwordController.text));
-                                    print('Loading State');
                                     firstTap = false;
                                   }
                                 }

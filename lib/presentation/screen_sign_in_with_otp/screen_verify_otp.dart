@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:one_health_hospital_app/logic/bloc_login_api/loginapi_bloc.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_image_card.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_submit_button.dart';
 import 'package:one_health_hospital_app/presentation/screen_sign_in_with_otp/screen_sign_in_with_otp.dart';
 import 'package:one_health_hospital_app/themedata.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 
@@ -54,18 +55,48 @@ class ScreenVerifyOTP extends StatelessWidget {
                 CustomPinInputField(
                     otpTextController: otpTextController,
                     newTextEditingController: newTextEditingController),
-                GestureDetector(
-                  onTap: () {
-                    if (otpTextController.text.isNotEmpty) {
-                      print('ready to api post');
+                BlocConsumer<LoginapiBloc, LoginapiState>(
+                  listener: (context, state) {
+                    if (state is VerifyOtpState) {
+                      showSnackBar(text: 'Checking the otp', context: context);
+                    }
+                    if (state is VerifyOTPfailedState) {
+                      showSnackBar(
+                        duration: 2000,
+                          text:
+                              "please enter the correct otp send to the registered mobile number. ${state.message}",
+                          context: context);
+                    }
+                    if (state is VerifyOtpSuccessState) {
+                      showSnackBar(text: state.message, context: context);
                     }
                   },
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 1.h, horizontal: 10.w),
-                    child: const CustomSubmitButton(
-                        text: 'VERIFY OTP', bgColor: Colors.deepPurple),
-                  ),
+                  builder: (context, state) {
+                    if (state is VerifyOtpState) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 1.h, horizontal: 10.w),
+                        child: const CustomLoadingSubmitButton(
+                            text: 'VERIFY OTP', bgColor: Colors.deepPurple),
+                      );
+                    }
+                    return GestureDetector(
+                      onTap: () {
+                        if (otpTextController.text.isNotEmpty) {
+                          context.read<LoginapiBloc>().add(VerifyOtp(
+                              number: ScreenSignInwithOtp
+                                  .mobileNumberController.text,
+                              otp: int.parse(otpTextController.text)));
+                        }
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 1.h, horizontal: 10.w),
+                        child: const CustomSubmitButton(
+                            text: 'VERIFY OTP', bgColor: Colors.deepPurple),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -108,10 +139,11 @@ class CustomPinInputField extends StatelessWidget {
         ),
         animationDuration: const Duration(milliseconds: 300),
         controller: newTextEditingController,
-        onCompleted: (v) {
-          otpTextController.text = v;
-          print(otpTextController.text);
-          print("Completed");
+        onCompleted: (value) {
+          otpTextController.text = value;
+          context.read<LoginapiBloc>().add(VerifyOtp(
+              number: ScreenSignInwithOtp.mobileNumberController.text,
+              otp: int.parse(value)));
         },
       ),
     );

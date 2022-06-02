@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:one_health_hospital_app/logic/bloc_login_api/loginapi_bloc.dart';
 import 'package:one_health_hospital_app/logic/validation_mixin/vaidator_mixin.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_image_card.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_submit_button.dart';
@@ -63,25 +65,51 @@ class ScreenSignInwithOtp extends StatelessWidget with TextFieldValidator {
                         hintText: 'Mobile number',
                         keyBoardType: TextInputType.number,
                         iconData: Icons.phone,
+                        nextAction: TextInputAction.done,
                         textController: mobileNumberController),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        print('ready to api post');
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                child: ScreenVerifyOTP(),
-                                type: PageTransitionType.rightToLeft));
+                  BlocConsumer<LoginapiBloc, LoginapiState>(
+                    listener: (context, state) {
+                      if (state is RequestOtpState) {
+                        showSnackBar(
+                            text: 'Checking details', context: context);
+                      }
+                      if (state is LoginapiNoInternetState) {
+                        showSnackBar(
+                            text: 'No internet found', context: context);
+                      }
+                      if (state is RequestOtpSuccessState) {
+                        showSnackBar(
+                            text: 'Otp send successfully', context: context);
+                        Navigator.of(context).push(PageTransition(
+                            child: ScreenVerifyOTP(),
+                            type: PageTransitionType.rightToLeft));
+                      }
+                      if (state is RequestapiErrorState) {
+                        showSnackBar(text: state.message, context: context);
                       }
                     },
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 1.h, horizontal: 10.w),
-                      child: const CustomSubmitButton(
-                          text: 'SEND OTP', bgColor: Colors.blue),
-                    ),
+                    builder: (context, state) {
+                      if (state is RequestOtpState) {
+                        return CustomLoadingSubmitButton(
+                            text: 'SEND OTP', bgColor: Colors.blue);
+                      }
+                      return GestureDetector(
+                        onTap: () {
+                          if (_formKey.currentState!.validate()) {
+                            print('ready to api post');
+                            context.read<LoginapiBloc>().add(RequestOtp(
+                                number: mobileNumberController.text));
+                          }
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 1.h, horizontal: 10.w),
+                          child: const CustomSubmitButton(
+                              text: 'SEND OTP', bgColor: Colors.blue),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

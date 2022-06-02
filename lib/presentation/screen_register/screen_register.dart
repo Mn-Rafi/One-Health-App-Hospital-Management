@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_icons/line_icons.dart';
@@ -43,6 +45,7 @@ class RegisterScreenBody extends StatelessWidget with TextFieldValidator {
   static TextEditingController bloodGroupController = TextEditingController();
   static TextEditingController genderController = TextEditingController();
   static String? fleImagePath;
+  static File? fileImage;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool firstTap = true;
@@ -110,7 +113,7 @@ class RegisterScreenBody extends StatelessWidget with TextFieldValidator {
                   padding:
                       EdgeInsets.symmetric(vertical: 1.h, horizontal: 10.w),
                   child: CustomTextFormField(
-                    textCapitalisation: TextCapitalization.words,
+                      textCapitalisation: TextCapitalization.words,
                       validator: (val) {
                         return isNameValid(val, 'first name');
                       },
@@ -123,7 +126,7 @@ class RegisterScreenBody extends StatelessWidget with TextFieldValidator {
                   padding:
                       EdgeInsets.symmetric(vertical: 1.h, horizontal: 10.w),
                   child: CustomTextFormField(
-                    textCapitalisation: TextCapitalization.words,
+                      textCapitalisation: TextCapitalization.words,
                       validator: (val) {
                         return isNameValid(val, 'second name');
                       },
@@ -228,27 +231,20 @@ class RegisterScreenBody extends StatelessWidget with TextFieldValidator {
                       padding: EdgeInsets.symmetric(vertical: 1.h),
                       child: GestureDetector(
                         onTap: () {
-                          if (firstTap) {
-                            if (_formKey.currentState!.validate()) {
-                              if (genderController.text.isNotEmpty &&
-                                  bloodGroupController.text.isNotEmpty &&
-                                  fleImagePath != null) {
-                                context.read<RegisterCubit>().validScreenOne();
-                                firstTap = false;
-                              }
-                              if (fleImagePath == null) {
-                                context
-                                    .read<RegisterCubit>()
-                                    .imageNotSelected();
-                              } else if (genderController.text.isEmpty) {
-                                context
-                                    .read<RegisterCubit>()
-                                    .genderNotSelected();
-                              } else if (bloodGroupController.text.isEmpty) {
-                                context
-                                    .read<RegisterCubit>()
-                                    .bloodGroupNotSelected();
-                              }
+                          if (_formKey.currentState!.validate()) {
+                            if (genderController.text.isNotEmpty &&
+                                bloodGroupController.text.isNotEmpty &&
+                                fleImagePath != null) {
+                              context.read<RegisterCubit>().validScreenOne();
+                            }
+                            if (fleImagePath == null) {
+                              context.read<RegisterCubit>().imageNotSelected();
+                            } else if (genderController.text.isEmpty) {
+                              context.read<RegisterCubit>().genderNotSelected();
+                            } else if (bloodGroupController.text.isEmpty) {
+                              context
+                                  .read<RegisterCubit>()
+                                  .bloodGroupNotSelected();
                             }
                           }
                         },

@@ -26,3 +26,42 @@ class LoginapiErrorState extends LoginapiState {
     required this.message,
   });
 }
+
+class RequestapiErrorState extends LoginapiState {
+  final String message;
+  RequestapiErrorState({
+    required this.message,
+  });
+}
+
+class RequestOtpState extends LoginapiState {}
+
+class RequestOtpSuccessState extends LoginapiState {
+  final String message;
+  RequestOtpSuccessState({
+    required this.message,
+  });
+}
+
+class RequestOTPfailedState extends LoginapiState {}
+
+
+class VerifyOtpState extends LoginapiState {}
+
+class VerifyOtpSuccessState extends LoginapiState {
+  final User user;
+  final String token;
+  final String message;
+  VerifyOtpSuccessState({
+    required this.user,
+    required this.token,
+    required this.message,
+  });
+}
+
+class VerifyOTPfailedState extends LoginapiState {
+  final String message;
+  VerifyOTPfailedState({
+    required this.message,
+  });
+}

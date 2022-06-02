@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:one_health_hospital_app/logic/bloc_user_register/userregister_bloc.dart';
 import 'package:one_health_hospital_app/logic/cubit_register/register_cubit.dart';
 import 'package:one_health_hospital_app/logic/validation_mixin/vaidator_mixin.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_image_card.dart';
@@ -10,6 +11,7 @@ import 'package:one_health_hospital_app/presentation/customclasses_and_constants
 import 'package:one_health_hospital_app/presentation/screen_register/screen_register.dart';
 import 'package:one_health_hospital_app/presentation/screen_sign_in/screen_sign_in.dart';
 import 'package:one_health_hospital_app/presentation/screen_signin_or_register/screen_signin_or_register.dart';
+import 'package:one_health_hospital_app/repositories/user_register/user_register_data.dart';
 import 'package:one_health_hospital_app/themedata.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
@@ -30,8 +32,6 @@ class RegisterScreenBodyTwo extends StatelessWidget with TextFieldValidator {
   IconData hidePass1 = Icons.visibility_off;
   bool isObscure = true;
   bool isObscure1 = true;
-
-  bool firstTap = true;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class RegisterScreenBodyTwo extends StatelessWidget with TextFieldValidator {
                               return CustomCircularImageCard(
                                 fileImagePath: state is PickImageEnd
                                     ? state.fileImagePath
-                                    : RegisterScreenBody.fleImagePath,
+                                    : RegisterScreenBody.fileImage!.path,
                                 imagePath: 'images/circle_avatar.jpg',
                               );
                             },
@@ -126,17 +126,6 @@ class RegisterScreenBodyTwo extends StatelessWidget with TextFieldValidator {
                         if (state is PasswordDonoMatch) {
                           showSnackBar(
                               context: context, text: 'Password do not match');
-                        }
-                        if (state is FrontEndValidationSucces) {
-                          showSnackBar(
-                              context: context, text: 'Checking detail');
-                          Future.delayed(const Duration(milliseconds: 2000))
-                              .then((value) => Navigator.pushAndRemoveUntil(
-                                  context,
-                                  PageTransition(
-                                      child: ScreenSigninOrRegister(),
-                                      type: PageTransitionType.fade),
-                                  (route) => false));
                         }
                       },
                       builder: (context, state) {
@@ -194,28 +183,85 @@ class RegisterScreenBodyTwo extends StatelessWidget with TextFieldValidator {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1.h),
-                    child: GestureDetector(
-                      onTap: () {
-                        // if (firstTap) {
-                        if (_formKey.currentState!.validate()) {
-                          if (passwordController.text !=
-                              confirmPasswordController.text) {
-                            context.read<RegisterCubit>().passwordDonotMatch();
-                          }
-                          context
-                              .read<RegisterCubit>()
-                              .frontEndValidationSuccess();
-                          firstTap = false;
+                  BlocConsumer<UserregisterBloc, UserregisterState>(
+                    listener: (context, state) {
+                      if (state is UserRegisterSubmittedState) {
+                        showSnackBar(
+                            text: 'Checking Registered details',
+                            context: context);
+                      }
+                      if (state is UserRegisterFailedState) {
+                        if (state.message.contains('phone_1 dup')) {
+                          showSnackBar(
+                              text: 'The number already have registered',
+                              context: context);
+                        } else {
+                          showSnackBar(text: state.message, context: context);
                         }
-                        // }
-                      },
-                      child: const CustomSubmitButton(
-                        bgColor: Color(0xff5593b7),
-                        text: 'REGISTER',
-                      ),
-                    ),
+                      }
+                      if (state is UserRegisterSuccessState) {
+                        showSnackBar(text: state.message, context: context);
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            PageTransition(
+                                child: const ScreenSigninOrRegister(),
+                                type: PageTransitionType.fade),
+                            (route) => false);
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is UserRegisterSubmittedState) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 1.h),
+                          child: const CustomLoadingSubmitButton(
+                              text: 'REGISTER', bgColor: Color(0xff5593b7)),
+                        );
+                      }
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 1.h),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (_formKey.currentState!.validate()) {
+                              if (passwordController.text !=
+                                  confirmPasswordController.text) {
+                                context
+                                    .read<RegisterCubit>()
+                                    .passwordDonotMatch();
+                              } else {
+                                final inputModel = UserRegisterInputModel(
+                                  firstName: RegisterScreenBody
+                                      .firstNameController.text,
+                                  secondName: RegisterScreenBody
+                                      .secondNameController.text,
+                                  age: int.parse(
+                                      RegisterScreenBody.ageController.text),
+                                  gender:
+                                      RegisterScreenBody.genderController.text,
+                                  email: RegisterScreenBodyTwo
+                                      .emailController.text,
+                                  phone: RegisterScreenBodyTwo
+                                      .mobileController.text,
+                                  blood: RegisterScreenBody
+                                      .bloodGroupController.text,
+                                  password: RegisterScreenBodyTwo
+                                      .passwordController.text,
+                                  image: RegisterScreenBody.fileImage!,
+                                );
+                                context.read<UserregisterBloc>().add(
+                                    UserRegisterSubmit(inputModel: inputModel));
+                              }
+                              // context
+                              //     .read<RegisterCubit>()
+                              //     .frontEndValidationSuccess();
+                            }
+                          },
+                          child: const CustomSubmitButton(
+                            bgColor: Color(0xff5593b7),
+                            text: 'REGISTERS',
+                          ),
+                        ),
+                      );
+                    },
                   )
                 ],
               ),
