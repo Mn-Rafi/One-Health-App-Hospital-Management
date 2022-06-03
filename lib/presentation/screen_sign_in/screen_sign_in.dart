@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:one_health_hospital_app/logic/bloc_login_api/loginapi_bloc.dart';
-import 'package:one_health_hospital_app/logic/cubit_welcome_screen/welcomescreen_cubit.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_image_card.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_submit_button.dart';
+import 'package:one_health_hospital_app/presentation/screen_bottom_navigatio/screen_bottom_navigation.dart';
 import 'package:one_health_hospital_app/presentation/screen_register/screen_register.dart';
-import 'package:one_health_hospital_app/presentation/screen_register/screen_register_two.dart';
 import 'package:one_health_hospital_app/presentation/screen_sign_in_with_otp/screen_sign_in_with_otp.dart';
-import 'package:one_health_hospital_app/presentation/screen_signin_or_register/screen_signin_or_register.dart';
-import 'package:one_health_hospital_app/repositories/connectivity_services/connectivity_services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 
@@ -168,8 +165,13 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                                 duration: 2000);
                           }
                           if (state is LoginapiLoadedState) {
-                            showSnackBar(
-                                text: state.message, context: context);
+                            showSnackBar(text: state.message, context: context);
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                PageTransition(
+                                    child: const ScreenBottomNavigation(),
+                                    type: PageTransitionType.rightToLeft),
+                                (route) => false);
                           }
                           if (state is LoginapiErrorState) {
                             showSnackBar(text: state.message, context: context);
@@ -187,14 +189,11 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                           } else {
                             return GestureDetector(
                               onTap: () {
-                                if (firstTap) {
-                                  if (_formKey.currentState!.validate()) {
-                                    context.read<LoginapiBloc>().add(
-                                        LoginapiinitialEvent(
-                                            email: emailController.text,
-                                            password: passwordController.text));
-                                    firstTap = false;
-                                  }
+                                if (_formKey.currentState!.validate()) {
+                                  context.read<LoginapiBloc>().add(
+                                      LoginapiinitialEvent(
+                                          email: emailController.text,
+                                          password: passwordController.text));
                                 }
                               },
                               child: const CustomSubmitButton(

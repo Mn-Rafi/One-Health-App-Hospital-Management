@@ -81,6 +81,7 @@ class ScreenSignInwithOtp extends StatelessWidget with TextFieldValidator {
                       if (state is RequestOtpSuccessState) {
                         showSnackBar(
                             text: 'Otp send successfully', context: context);
+                        ScreenVerifyOTP.controller.start();
                         Navigator.of(context).push(PageTransition(
                             child: ScreenVerifyOTP(),
                             type: PageTransitionType.rightToLeft));
@@ -91,7 +92,7 @@ class ScreenSignInwithOtp extends StatelessWidget with TextFieldValidator {
                     },
                     builder: (context, state) {
                       if (state is RequestOtpState) {
-                        return CustomLoadingSubmitButton(
+                        return const CustomLoadingSubmitButton(
                             text: 'SEND OTP', bgColor: Colors.blue);
                       }
                       return GestureDetector(

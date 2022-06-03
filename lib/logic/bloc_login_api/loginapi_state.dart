@@ -34,6 +34,13 @@ class RequestapiErrorState extends LoginapiState {
   });
 }
 
+class ResendapiErrorState extends LoginapiState {
+  final String message;
+  ResendapiErrorState({
+    required this.message,
+  });
+}
+
 class RequestOtpState extends LoginapiState {}
 
 class RequestOtpSuccessState extends LoginapiState {
@@ -43,8 +50,16 @@ class RequestOtpSuccessState extends LoginapiState {
   });
 }
 
+class ResendOtpSuccessState extends LoginapiState {
+  final String message;
+  ResendOtpSuccessState({
+    required this.message,
+  });
+}
+
 class RequestOTPfailedState extends LoginapiState {}
 
+class ResendOTPfailedState extends LoginapiState {}
 
 class VerifyOtpState extends LoginapiState {}
 
@@ -65,3 +80,7 @@ class VerifyOTPfailedState extends LoginapiState {
     required this.message,
   });
 }
+
+class ResendOtpInitialised extends LoginapiState {}
+
+class ResendOtpEnd extends LoginapiState {}

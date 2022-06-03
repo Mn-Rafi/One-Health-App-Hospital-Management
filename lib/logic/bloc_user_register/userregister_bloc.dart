@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
@@ -15,23 +14,17 @@ class UserregisterBloc extends Bloc<UserregisterEvent, UserregisterState> {
   ) : super(UserregisterInitial()) {
     on<UserRegisterSubmit>((event, emit) async {
       emit(UserRegisterSubmittedState());
-      print('AKATHETHYYYYYYYYYY');
       try {
-        print('Veendum Njan thannee');
         final Response responseForm = await _userRegisterServices
             .getUserRegisterResponse(inputs: event.inputModel);
-        print(responseForm.toString());
         if (responseForm.statusCode == 201) {
-          print('KITTY IKKAAAA KITTY');
           emit(UserRegisterSuccessState(message: 'Succesefully Registered'));
         } else {
-          print('DIOOOOOOOOOOOOOOOOOOOOOO');
           throw DioError;
         }
       } catch (e) {
         emit(UserRegisterFailedState(message: e.toString()));
         if (e is DioError) {
-          print(e);
           emit(UserRegisterFailedState(message: e.response!.data["message"]));
         }
       }
@@ -39,4 +32,3 @@ class UserregisterBloc extends Bloc<UserregisterEvent, UserregisterState> {
     on<UserregisterEvent>((event, emit) {});
   }
 }
-

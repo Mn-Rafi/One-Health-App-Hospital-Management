@@ -9,7 +9,6 @@ import 'package:one_health_hospital_app/presentation/customclasses_and_constants
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_submit_button.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_textformfield.dart';
 import 'package:one_health_hospital_app/presentation/screen_register/screen_register.dart';
-import 'package:one_health_hospital_app/presentation/screen_sign_in/screen_sign_in.dart';
 import 'package:one_health_hospital_app/presentation/screen_signin_or_register/screen_signin_or_register.dart';
 import 'package:one_health_hospital_app/repositories/user_register/user_register_data.dart';
 import 'package:one_health_hospital_app/themedata.dart';
@@ -250,9 +249,6 @@ class RegisterScreenBodyTwo extends StatelessWidget with TextFieldValidator {
                                 context.read<UserregisterBloc>().add(
                                     UserRegisterSubmit(inputModel: inputModel));
                               }
-                              // context
-                              //     .read<RegisterCubit>()
-                              //     .frontEndValidationSuccess();
                             }
                           },
                           child: const CustomSubmitButton(

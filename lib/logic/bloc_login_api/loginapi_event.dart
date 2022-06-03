@@ -35,3 +35,10 @@ class VerifyOtp extends LoginapiEvent {
     required this.otp,
   });
 }
+
+class ResendOtpEVent extends LoginapiEvent {
+  final String number;
+  ResendOtpEVent({
+    required this.number,
+  });
+}

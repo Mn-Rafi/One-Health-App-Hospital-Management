@@ -1,18 +1,22 @@
+import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
 import 'package:one_health_hospital_app/logic/bloc_login_api/loginapi_bloc.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_image_card.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_submit_button.dart';
+import 'package:one_health_hospital_app/presentation/screen_bottom_navigatio/screen_bottom_navigation.dart';
 import 'package:one_health_hospital_app/presentation/screen_sign_in_with_otp/screen_sign_in_with_otp.dart';
 import 'package:one_health_hospital_app/themedata.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 
 class ScreenVerifyOTP extends StatelessWidget {
   ScreenVerifyOTP({Key? key}) : super(key: key);
   TextEditingController newTextEditingController = TextEditingController();
-
+  static CustomTimerController controller = CustomTimerController();
   static TextEditingController otpTextController = TextEditingController();
   FocusNode focusNode = FocusNode();
 
@@ -62,13 +66,19 @@ class ScreenVerifyOTP extends StatelessWidget {
                     }
                     if (state is VerifyOTPfailedState) {
                       showSnackBar(
-                        duration: 2000,
+                          duration: 3000,
                           text:
                               "please enter the correct otp send to the registered mobile number. ${state.message}",
                           context: context);
                     }
                     if (state is VerifyOtpSuccessState) {
                       showSnackBar(text: state.message, context: context);
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          PageTransition(
+                              child: const ScreenBottomNavigation(),
+                              type: PageTransitionType.rightToLeft),
+                          (route) => false);
                     }
                   },
                   builder: (context, state) {
@@ -98,6 +108,51 @@ class ScreenVerifyOTP extends StatelessWidget {
                     );
                   },
                 ),
+                BlocConsumer<LoginapiBloc, LoginapiState>(
+                  listener: (context, state) {
+                    if (state is ResendOtpInitialised) {
+                      showSnackBar(text: 'Checking details', context: context);
+                    }
+                    if (state is ResendapiErrorState) {
+                      showSnackBar(text: state.message, context: context);
+                    }
+                    if (state is ResendOtpSuccessState) {
+                      showSnackBar(
+                          text:
+                              'Otp sent to ${ScreenSignInwithOtp.mobileNumberController.text}',
+                          context: context);
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is ResendOtpInitialised) {
+                      return CustomTimer(
+                          controller: controller,
+                          begin: const Duration(seconds: 30),
+                          end: const Duration(seconds: 0),
+                          builder: (time) {
+                            return Text("Resend Otp in ${time.seconds} seconds",
+                                style: TextStyle(fontSize: 12.sp));
+                          });
+                    } else {
+                      return GestureDetector(
+                        onTap: () {
+                          context.read<LoginapiBloc>().add(ResendOtpEVent(
+                              number: ScreenSignInwithOtp
+                                  .mobileNumberController.text));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 1.h, horizontal: 10.w),
+                          child: Text(
+                            'RESEND OTP',
+                            style: GoogleFonts.ubuntu(
+                                color: Colors.blue, fontSize: 11.sp),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                )
               ],
             ),
           ),

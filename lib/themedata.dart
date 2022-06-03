@@ -27,6 +27,8 @@ showSnackBar(
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
+const userHive = 'userHive';
+
 final List<String> imageList = [
   'images/add_image_icon.png',
   'images/circle_avatar.jpg',
