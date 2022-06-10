@@ -9,3 +9,5 @@ class SplashscreenEnd extends SplashscreenState {}
 
 
 class ButtonPressedState extends SplashscreenState{}
+
+class ChummaState extends SplashscreenState{}
