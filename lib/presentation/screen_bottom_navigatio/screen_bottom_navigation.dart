@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:one_health_hospital_app/presentation/screen_edit_profile/screen_edit_profile.dart';
+import 'package:one_health_hospital_app/presentation/screen_home/screen_home.dart';
 import 'package:one_health_hospital_app/themedata.dart';
 
 class ScreenBottomNavigation extends StatefulWidget {
@@ -39,16 +40,14 @@ class _ScreenBottomNavigationState extends State<ScreenBottomNavigation> {
               setState(() => _currentIndex = index);
             },
             children: <Widget>[
-              Container(
-                color: Colors.blueGrey,
-              ),
+              const Home(),
               Container(
                 color: Colors.red,
               ),
               Container(
                 color: Colors.green,
               ),
-              ScreenEditProfile(),
+              const ScreenEditProfile(),
             ],
           ),
         ),
@@ -60,17 +59,21 @@ class _ScreenBottomNavigationState extends State<ScreenBottomNavigation> {
           },
           items: <BottomNavyBarItem>[
             BottomNavyBarItem(
-              textAlign: TextAlign.center,
-              title: Text('Home'), icon: Icon(LineIcons.home)),
+                textAlign: TextAlign.center,
+                title: const Text('Home'),
+                icon: const Icon(LineIcons.home)),
             BottomNavyBarItem(
-              textAlign: TextAlign.center,
-                title: Text('Appointments'), icon: Icon(LineIcons.calendar)),
+                textAlign: TextAlign.center,
+                title: const Text('Appointments'),
+                icon: const Icon(LineIcons.calendar)),
             BottomNavyBarItem(
-              textAlign: TextAlign.center,
-                title: Text('Faculties'), icon: Icon(LineIcons.doctor)),
+                textAlign: TextAlign.center,
+                title: const Text('Faculties'),
+                icon: const Icon(LineIcons.doctor)),
             BottomNavyBarItem(
-              textAlign: TextAlign.center,
-                title: Text('Profile'), icon: Icon(LineIcons.userEdit)),
+                textAlign: TextAlign.center,
+                title: const Text('Profile'),
+                icon: const Icon(LineIcons.userEdit)),
           ],
         ),
       ),

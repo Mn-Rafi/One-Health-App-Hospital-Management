@@ -33,7 +33,7 @@ final List<String> imageList = [
   'images/add_image_icon.png',
   'images/circle_avatar.jpg',
   'images/gender_icon.png',
-  // 'images/one_health_logo.png',
+  'images/one_health_logo.png',
   'images/sign_with_otp.jpg',
   'images/signin_or_register.jpg',
   'images/signin.jpg'

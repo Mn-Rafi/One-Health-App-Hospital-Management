@@ -253,7 +253,7 @@ class RegisterScreenBodyTwo extends StatelessWidget with TextFieldValidator {
                           },
                           child: const CustomSubmitButton(
                             bgColor: Color(0xff5593b7),
-                            text: 'REGISTERS',
+                            text: 'REGISTER',
                           ),
                         ),
                       );

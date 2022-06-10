@@ -17,46 +17,29 @@ class BloodGroupAlertBox extends StatelessWidget {
     'AB -ve'
   ];
 
-  BloodGroup? bloodGroupSelect = BloodGroup.one;
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Choose Your Blood Group'),
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-      content: SingleChildScrollView(
-        child: SizedBox(
-          width: double.maxFinite,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const Divider(),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.4,
-                ),
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: BloodGroupAlertBox.bloodGroups.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return RadioListTile<BloodGroup>(
-                          title: Text(BloodGroupAlertBox.bloodGroups[index]),
-                          value: BloodGroup.values[index],
-                          groupValue: bloodGroupSelect,
-                          onChanged: (BloodGroup? value) {
-                            bloodGroupSelect = value;
-                            RegisterScreenBody.bloodGroupController.text =
-                                BloodGroupAlertBox
-                                    .bloodGroups[bloodGroupSelect!.index];
-                            Navigator.pop(context);
-                          });
-                    }),
-              ),
-            ],
+        title: const Text('Choose Your Blood Group'),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        content: SingleChildScrollView(
+          child: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              itemCount: bloodGroups.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(bloodGroups[index]),
+                  onTap: () {
+                    RegisterScreenBody.bloodGroupController.text = bloodGroups[index];
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

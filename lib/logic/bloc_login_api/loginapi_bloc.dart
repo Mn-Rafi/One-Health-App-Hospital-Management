@@ -42,8 +42,8 @@ class LoginapiBloc extends Bloc<LoginapiEvent, LoginapiState> {
             .getUserResponseData(email: event.email, password: event.password);
         if (responseFrom.statusCode == 200) {
           final response = userLoginResponseModelFromJson(responseFrom.data);
-          print('ID : ${response.user.id}');
-          print('TOKEN : ${response.token}');
+          // print('ID : ${response.user.id}');
+          // print('TOKEN : ${response.token}');
           emit(LoginapiLoadedState(
               user: response.user,
               token: response.token,

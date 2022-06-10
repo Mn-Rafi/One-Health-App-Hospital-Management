@@ -1,7 +1,5 @@
 import 'package:hive/hive.dart';
 
-import 'package:one_health_hospital_app/repositories/user_login/user_login_response_model.dart';
-
 part 'store_user_details.g.dart';
 
 @HiveType(typeId: 0)
