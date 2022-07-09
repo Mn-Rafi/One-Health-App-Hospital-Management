@@ -7,6 +7,8 @@ import 'package:one_health_hospital_app/logic/bloc_user_register/userregister_bl
 import 'package:one_health_hospital_app/presentation/screen_splash/screen_splash.dart';
 import 'package:one_health_hospital_app/repositories/connectivity_services/connectivity_services.dart';
 import 'package:one_health_hospital_app/repositories/local_storage/store_user_details.dart';
+import 'package:one_health_hospital_app/repositories/user_get_all_appoinments/user_get_all_appoinments.dart';
+import 'package:one_health_hospital_app/repositories/user_get_doctors_services/user_get_doctor_services.dart';
 import 'package:one_health_hospital_app/repositories/user_get_profile/user_get_profile_services.dart';
 import 'package:one_health_hospital_app/repositories/user_login/user_login_services.dart';
 import 'package:one_health_hospital_app/repositories/user_register/user_register_services.dart';
@@ -46,6 +48,15 @@ class MyApp extends StatelessWidget {
           ),
           RepositoryProvider(
             create: (context) => GetUserProfileServices(),
+          ),
+          RepositoryProvider(
+            create: (context) => GetAllDoctorsServices(),
+          ),
+          RepositoryProvider(
+            create: (context) => GetAllDepartments(),
+          ),
+          RepositoryProvider(
+            create: (context) => AppointmentsServices(),
           ),
         ],
         child: MultiBlocProvider(

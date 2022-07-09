@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
@@ -42,14 +44,12 @@ class LoginapiBloc extends Bloc<LoginapiEvent, LoginapiState> {
             .getUserResponseData(email: event.email, password: event.password);
         if (responseFrom.statusCode == 200) {
           final response = userLoginResponseModelFromJson(responseFrom.data);
-          // print('ID : ${response.user.id}');
-          // print('TOKEN : ${response.token}');
-          emit(LoginapiLoadedState(
-              user: response.user,
-              token: response.token,
-              message: response.message));
+          log('ID : ${response.user.id}');
+          log('TOKEN : ${response.token}');
+
           await userLocalData.clear();
-          await userLocalData.add(UserLocalData(
+          await userLocalData
+              .add(UserLocalData(
             token: response.token,
             id: response.user.id,
             age: response.user.age,
@@ -61,7 +61,14 @@ class LoginapiBloc extends Bloc<LoginapiEvent, LoginapiState> {
             password: response.user.password,
             phone: response.user.phone,
             secondName: response.user.secondName,
-          ));
+          ))
+              .then((value) {
+            emit(LoginapiLoadedState(
+                user: response.user,
+                token: response.token,
+                message: response.message));
+          });
+
           print(userLocalData.values.toList()[0].firstName);
         } else {
           throw DioError;

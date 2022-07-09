@@ -5,7 +5,7 @@ part 'splashscreen_state.dart';
 
 class SplashscreenCubit extends Cubit<SplashscreenState> {
   SplashscreenCubit() : super(SplashscreenInitial()) {
-    emit(ChummaState());
+    emit(InitailSplashState());
     Future.delayed(const Duration(seconds: 3))
         .then((value) => emit(SplashscreenEnd()));
   }

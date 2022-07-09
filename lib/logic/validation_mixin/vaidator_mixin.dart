@@ -13,6 +13,14 @@ mixin TextFieldValidator {
     }
   }
 
+  String? isValid({required String? value, required String nameOFFiled}) {
+    if (value!.isEmpty) {
+      return "$nameOFFiled can't be empty";
+    } else {
+      return null;
+    }
+  }
+
   String? isPasswordValid(String? value) {
     RegExp passwordValid =
         RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');

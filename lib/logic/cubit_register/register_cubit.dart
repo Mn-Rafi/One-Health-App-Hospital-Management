@@ -37,7 +37,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       }
     }
     RegisterScreenBody.fleImagePath = imagePath;
-
+    print('imagePath: $imagePath');
     emit(PickImageEnd(fileImagePath: imagePath));
   }
 

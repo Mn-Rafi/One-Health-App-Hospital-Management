@@ -1,11 +1,11 @@
-class Doctor {
+class DoctorOld {
   final String name;
   final String specialist;
   final String rating;
   final String reviews;
   final String academy;
   final String image;
-  Doctor({
+  DoctorOld({
     required this.academy,
     required this.name,
     required this.rating,
@@ -31,7 +31,7 @@ List<Consultation> consultationList = [
     title: "Cardio Issues?",
     price: "400",
     subtitle:
-        "For cardio patient here can easily contact with doctor. Can chat & live chat.",
+        "For cardio patient here can easily contact with doctorOld. Can chat & live chat.",
   ),
   Consultation(
     title: "Dental trouble?",
@@ -59,8 +59,8 @@ List<Consultation> consultationList = [
   ),
 ];
 
-List<Doctor> doctorList = [
-  Doctor(
+List<DoctorOld> doctorList = [
+  DoctorOld(
       name: "Dr. Jessica Vania",
       rating: "4.5",
       reviews: "80",
@@ -68,35 +68,35 @@ List<Doctor> doctorList = [
       academy: "Harvard Medical College Hospital",
       image:
           "images/5-Ways-to-Help-Employees-Choose-the-Right-Primary-Care-Doctor--e1543342970537.jpg"),
-  Doctor(
+  DoctorOld(
       name: "Dr. Mahmud Nik Hasan",
       rating: "4.9",
       reviews: "27",
       specialist: "Heart Surgeon",
       academy: "Dhaka Medical College Hospital",
       image: "images/92019175-happy-doctor-with-clipboard-at-clinic.jpg"),
-  Doctor(
+  DoctorOld(
       name: "Dr. Jessie McCaffrey",
       rating: "4.9",
       reviews: "27",
       specialist: "Therapist",
       academy: "Los Angeles Medical College Hospital",
       image: "images/doctor-in-branding-article.jpg"),
-  Doctor(
+  DoctorOld(
       name: "Dr. Justin Lathia",
       rating: "4.9",
       reviews: "27",
       specialist: "Dental",
       academy: "Miami Medical College Hospital",
       image: "images/eIFBqS61.jpg"),
-  Doctor(
+  DoctorOld(
       name: "Dr. Hayley Williams",
       rating: "4.9",
       reviews: "27",
       specialist: "Cardiologist",
       academy: "New York Medical College Hospital",
       image: "images/file-20191203-66986-im7o5.jpg"),
-  Doctor(
+  DoctorOld(
       name: "Dr. Sakura Miyawaki",
       rating: "4.9",
       reviews: "27",

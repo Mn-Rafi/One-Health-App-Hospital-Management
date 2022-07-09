@@ -33,22 +33,23 @@ class ScreenEditProfile extends StatelessWidget {
             ));
           }
           if (state is FetchProfileDetailsSuccessState) {
+            print(state.image.path);
             return Scaffold(
                 body: SafeArea(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(state.firstName),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.network(state.image.path),
-                    ),
-                  ],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(state.firstName),
                   ),
-                ));
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(state.image.path),
+                  ),
+                ],
+              ),
+            ));
           } else {
             return CircularProgressIndicator();
           }

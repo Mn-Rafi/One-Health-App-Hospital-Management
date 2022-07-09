@@ -143,7 +143,8 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                               iconData: Icons.lock,
                               textController: passwordController,
                               validator: (val) {
-                                return isPasswordValid(val);
+                                return isValid(
+                                    value: val, nameOFFiled: 'password');
                               },
                               hintText: 'Password',
                               keyBoardType: TextInputType.text);
