@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:one_health_hospital_app/logic/models/all_appointments_response_model.dart';
 // import 'package:one_health_hospital_app/logic/models/doctor.dart';
@@ -10,6 +12,7 @@ class AppoinmentCard extends StatelessWidget {
   const AppoinmentCard({Key? key, required this.appointment}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    
     final theme = Theme.of(context);
     return Card(
       margin: const EdgeInsets.only(left: 18.0, bottom: 5.0),
@@ -68,17 +71,17 @@ class AppoinmentCard extends StatelessWidget {
                             child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Dr. : ' + appointment.doctor.toString(),
+                            Text('Dr. : ${appointment.doctor}',
                                 style: theme.textTheme.subtitle2!
                                     .copyWith(color: Colors.black)),
                             const SizedBox(height: 5.0),
-                            Text('Reason : ' + appointment.reason.toString(),
+                            Text('Reason : ${appointment.reason}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: theme.textTheme.subtitle2!
                                     .copyWith(color: Colors.black)),
                             const SizedBox(height: 5.0),
-                            Text('Date : ' + appointment.date.toString(),
+                            Text('Date : ${appointment.date}',
                                 style: theme.textTheme.subtitle2!
                                     .copyWith(color: Colors.red, fontSize: 17)),
                           ],

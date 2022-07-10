@@ -66,8 +66,10 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
           final responseData =
               UserAppointmentsResponseModel.fromJson(response.data);
           log(responseData.toString());
-          appointmentsList = responseData.appointment;
           if (response.statusCode == 200 || response.statusCode == 201) {
+            appointmentsList = responseData.appointment;
+            appointmentsList!.sort((a, b) => a.date!.compareTo(b.date!));
+
             log('success');
           }
         } catch (e) {

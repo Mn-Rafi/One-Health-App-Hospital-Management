@@ -38,8 +38,14 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^2.0.0
+  icons_launcher: ^1.2.1
+
   flutter_test:
     sdk: flutter
+flutter_icons:
+  image_path: 'images/one_health_logo.png'
+  ios: true
+  android: true
 flutter:
 
   uses-material-design: true
