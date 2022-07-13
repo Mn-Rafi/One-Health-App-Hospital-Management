@@ -8,6 +8,7 @@ import 'package:one_health_hospital_app/presentation/screen_bottom_navigatio/scr
 import 'package:one_health_hospital_app/presentation/screen_register/screen_register.dart';
 import 'package:one_health_hospital_app/presentation/screen_sign_in_with_otp/screen_sign_in_with_otp.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:one_health_hospital_app/logic/cubit_signin_first/signinfirst_cubit.dart';
@@ -167,6 +168,9 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                           }
                           if (state is LoginapiLoadedState) {
                             showSnackBar(text: state.message, context: context);
+                            SharedPreferences.getInstance().then((prefs) {
+                              prefs.setBool('isLoggedIn', true);
+                            });
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 PageTransition(

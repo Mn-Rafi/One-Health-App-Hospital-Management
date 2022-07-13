@@ -20,79 +20,82 @@ class AppoinmentCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      child: SizedBox(
-        width: 250.0,
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 0.0,
-              right: 0.0,
-              child: Container(
-                width: 70.0,
-                height: 30.0,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: kGreenColor,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(12.0),
-                    bottomLeft: Radius.circular(12.0),
+      child: InkWell(
+        onTap: (){},
+        child: SizedBox(
+          width: 250.0,
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: 0.0,
+                right: 0.0,
+                child: Container(
+                  width: 70.0,
+                  height: 30.0,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: kGreenColor,
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(12.0),
+                      bottomLeft: Radius.circular(12.0),
+                    ),
+                  ),
+                  child: Text(
+                    appointment.time.toString(),
+                    style: theme.textTheme.subtitle1?.copyWith(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-                child: Text(
-                  appointment.time.toString(),
-                  style: theme.textTheme.subtitle1?.copyWith(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold),
+              ),
+              Positioned(
+                top: 30.0,
+                left: 15.0,
+                right: 18.0,
+                bottom: 15.0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(appointment.status!,
+                        style: theme.textTheme.subtitle2!
+                            .copyWith(color: Colors.green)),
+                    const SizedBox(height: 15.0),
+                    Expanded(
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            width: 2.0,
+                            color: kGreenColor,
+                          ),
+                          const SizedBox(width: 12.0),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Dr. : ${appointment.doctor}',
+                                  style: theme.textTheme.subtitle2!
+                                      .copyWith(color: Colors.black)),
+                              const SizedBox(height: 5.0),
+                              Text('Reason : ${appointment.reason}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.textTheme.subtitle2!
+                                      .copyWith(color: Colors.black)),
+                              const SizedBox(height: 5.0),
+                              Text('Date : ${appointment.date}',
+                                  style: theme.textTheme.subtitle2!
+                                      .copyWith(color: Colors.red, fontSize: 17)),
+                            ],
+                          )),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-              ),
-            ),
-            Positioned(
-              top: 30.0,
-              left: 15.0,
-              right: 18.0,
-              bottom: 15.0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(appointment.status!,
-                      style: theme.textTheme.subtitle2!
-                          .copyWith(color: Colors.green)),
-                  const SizedBox(height: 15.0),
-                  Expanded(
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          width: 2.0,
-                          color: kGreenColor,
-                        ),
-                        const SizedBox(width: 12.0),
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Dr. : ${appointment.doctor}',
-                                style: theme.textTheme.subtitle2!
-                                    .copyWith(color: Colors.black)),
-                            const SizedBox(height: 5.0),
-                            Text('Reason : ${appointment.reason}',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.subtitle2!
-                                    .copyWith(color: Colors.black)),
-                            const SizedBox(height: 5.0),
-                            Text('Date : ${appointment.date}',
-                                style: theme.textTheme.subtitle2!
-                                    .copyWith(color: Colors.red, fontSize: 17)),
-                          ],
-                        )),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

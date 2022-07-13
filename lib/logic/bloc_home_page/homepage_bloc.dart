@@ -65,7 +65,7 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
               token: userLocalDataList[0].token, id: userLocalDataList[0].id);
           final responseData =
               UserAppointmentsResponseModel.fromJson(response.data);
-          log(responseData.toString());
+          // log(responseData.toString());
           if (response.statusCode == 200 || response.statusCode == 201) {
             appointmentsList = responseData.appointment;
             appointmentsList!.sort((a, b) => a.date!.compareTo(b.date!));
@@ -100,5 +100,11 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
     });
 
     add(HomepageEvent());
+    on<HomePageNavigateToDepartments>((event, emit) {
+      emit(HomePageNavigateToDepartmentsState(
+        department: event.department,
+        currentIndex: event.currentIndex
+      ));
+    });
   }
 }

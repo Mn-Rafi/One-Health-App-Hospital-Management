@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:one_health_hospital_app/logic/cubit_splash_screen/splashscreen_cubit.dart';
+import 'package:one_health_hospital_app/presentation/screen_bottom_navigatio/screen_bottom_navigation.dart';
+import 'package:one_health_hospital_app/presentation/screen_home/screen_home.dart';
 import 'package:one_health_hospital_app/presentation/screen_signin_or_register/screen_signin_or_register.dart';
 import 'package:one_health_hospital_app/themedata.dart';
 import 'package:sizer/sizer.dart';
@@ -21,6 +23,14 @@ class ScreenSplash extends StatelessWidget {
                 context,
                 PageTransition(
                     child: ScreenSigninOrRegister(),
+                    type: PageTransitionType.rightToLeft,
+                    alignment: Alignment.center));
+          }
+          if (state is NavigateToHome) {
+            Navigator.pushReplacement(
+                context,
+                PageTransition(
+                    child: ScreenBottomNavigation(),
                     type: PageTransitionType.rightToLeft,
                     alignment: Alignment.center));
           }

@@ -10,6 +10,7 @@ import 'package:one_health_hospital_app/presentation/screen_sign_in_with_otp/scr
 import 'package:one_health_hospital_app/themedata.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class ScreenVerifyOTP extends StatelessWidget {
@@ -72,6 +73,9 @@ class ScreenVerifyOTP extends StatelessWidget {
                     }
                     if (state is VerifyOtpSuccessState) {
                       showSnackBar(text: state.message, context: context);
+                      SharedPreferences.getInstance().then((prefs) {
+                        prefs.setBool('isLoggedIn', true);
+                      });
                       Navigator.pushAndRemoveUntil(
                           context,
                           PageTransition(

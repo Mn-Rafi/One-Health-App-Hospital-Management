@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:one_health_hospital_app/logic/bloc_home_page/homepage_bloc.dart';
+import 'package:one_health_hospital_app/logic/models/all_doctor_response_model.dart';
 import 'package:one_health_hospital_app/presentation/helpers/colors.dart';
+// import 'package:one_health_hospital_app/presentation/screen_appointments/screen_appointments.dart';
+import 'package:one_health_hospital_app/presentation/screen_departments/screen_departments.dart';
 import 'package:one_health_hospital_app/presentation/widgets/consultation_card.dart';
-import 'package:one_health_hospital_app/presentation/widgets/doctor_card.dart';
+// import 'package:one_health_hospital_app/presentation/widgets/doctor_card.dart';
 import 'package:one_health_hospital_app/presentation/widgets/specialist_card.dart';
 import 'package:one_health_hospital_app/themedata.dart';
 import 'package:shimmer/shimmer.dart';
@@ -17,7 +20,17 @@ class ScreenHome extends StatelessWidget {
 
     return Container(
       decoration: kboxdecoration,
-      child: BlocBuilder<HomepageBloc, HomepageState>(
+      child: BlocConsumer<HomepageBloc, HomepageState>(
+        listener: (context, state) {
+          if (state is HomePageNavigateToDepartmentsState) { 
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ScreenDepartments(
+                department: state.department,
+                currentIndex: state.currentIndex,
+              ),
+            ));
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             appBar: PreferredSize(
@@ -111,10 +124,10 @@ class ScreenHome extends StatelessWidget {
                             );
                           }
                           if (state.appointmentList![index].status ==
-                              'Scheduled')
+                              'Scheduled') {
                             return AppoinmentCard(
                                 appointment: state.appointmentList![index]);
-                          else {
+                          } else {
                             return const SizedBox();
                           }
                         }
@@ -143,6 +156,8 @@ class ScreenHome extends StatelessWidget {
                         itemBuilder: (context, index) {
                           if (state is HomePageFetchDoctorsSuccessState) {
                             return SpecialistCard(
+                              departments: state.departmentList,
+                              index: index,
                               name: state.departmentList![index].name!,
                               color: cardsColorsList[index],
                               doctor: state
@@ -155,6 +170,7 @@ class ScreenHome extends StatelessWidget {
                             baseColor: Colors.red[300]!.withOpacity(0.1),
                             highlightColor: Colors.grey[200]!.withOpacity(0.4),
                             child: SpecialistCard(
+                              index: index,
                               name: 'One Health',
                               color: cardsColorsList[index],
                               doctor: '2',
@@ -173,8 +189,6 @@ class ScreenHome extends StatelessWidget {
     );
   }
 }
-
-
                   // Padding(
                   //   padding: const EdgeInsets.symmetric(horizontal: 18.0),
                   //   child: Row(

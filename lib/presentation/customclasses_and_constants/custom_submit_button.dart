@@ -5,26 +5,36 @@ import 'package:sizer/sizer.dart';
 class CustomSubmitButton extends StatelessWidget {
   final String text;
   final Color bgColor;
-  const CustomSubmitButton({
-    Key? key,
-    required this.text,
-    required this.bgColor,
-  }) : super(key: key);
+  final double? width;
+  final double? height;
+  final double? borderRadius;
+  final double? fontSize;
+  const CustomSubmitButton(
+      {Key? key,
+      required this.text,
+      required this.bgColor,
+      this.height,
+      this.fontSize,
+      this.borderRadius,
+      this.width})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      width: 50.w,
-      height: 6.h,
+      width: width ?? 50.w,
+      height: height ?? 6.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2.w),
+        borderRadius: BorderRadius.circular(borderRadius ?? 2.w),
         color: bgColor,
       ),
       child: Text(
         text,
         style: GoogleFonts.ubuntu(
-            color: Colors.white, fontWeight: FontWeight.w400, fontSize: 14.sp),
+            color: Colors.white,
+            fontWeight: FontWeight.w400,
+            fontSize: fontSize ?? 14.sp),
       ),
     );
   }

@@ -28,3 +28,13 @@ class HomePageFetchDoctorsSuccessState extends HomepageState {
     required this.departmentList,
   });
 }
+
+class HomePageNavigateToDepartmentsState extends HomepageState {
+  final int currentIndex;
+
+  final List<Department> department;
+  HomePageNavigateToDepartmentsState({
+    required this.currentIndex,
+    required this.department,
+  });
+}
