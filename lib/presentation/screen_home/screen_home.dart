@@ -1,14 +1,23 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:one_health_hospital_app/logic/bloc_home_page/homepage_bloc.dart';
 import 'package:one_health_hospital_app/logic/models/all_doctor_response_model.dart';
 import 'package:one_health_hospital_app/presentation/helpers/colors.dart';
+import 'package:one_health_hospital_app/presentation/screen_appointments/screen_appointments.dart';
+import 'package:one_health_hospital_app/presentation/screen_bottom_navigatio/screen_bottom_navigation.dart';
 // import 'package:one_health_hospital_app/presentation/screen_appointments/screen_appointments.dart';
 import 'package:one_health_hospital_app/presentation/screen_departments/screen_departments.dart';
+import 'package:one_health_hospital_app/presentation/screen_prescriptions/screen_prescriptions.dart';
+import 'package:one_health_hospital_app/presentation/screen_search/screen_search.dart';
 import 'package:one_health_hospital_app/presentation/widgets/consultation_card.dart';
+import 'package:one_health_hospital_app/presentation/widgets/doctor_card.dart';
+import 'package:one_health_hospital_app/presentation/widgets/precription_card.dart';
 // import 'package:one_health_hospital_app/presentation/widgets/doctor_card.dart';
 import 'package:one_health_hospital_app/presentation/widgets/specialist_card.dart';
 import 'package:one_health_hospital_app/themedata.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ScreenHome extends StatelessWidget {
@@ -22,7 +31,7 @@ class ScreenHome extends StatelessWidget {
       decoration: kboxdecoration,
       child: BlocConsumer<HomepageBloc, HomepageState>(
         listener: (context, state) {
-          if (state is HomePageNavigateToDepartmentsState) { 
+          if (state is HomePageNavigateToDepartmentsState) {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ScreenDepartments(
                 department: state.department,
@@ -74,7 +83,18 @@ class ScreenHome extends StatelessWidget {
                       child: IconButton(
                         icon:
                             const Icon(Icons.search, color: kPrimaryLightColor),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ScreenDepartments(
+                              department:
+                                  state is HomePageFetchDoctorsSuccessState
+                                      ? state.departmentList!
+                                      : null,
+                              isSearching: true,
+                              currentIndex: 0,
+                            ),
+                          ));
+                        },
                       ),
                     ),
                   ),
@@ -91,26 +111,113 @@ class ScreenHome extends StatelessWidget {
                   const SizedBox(height: 25.0),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: Text("Appointments",
-                        style:
-                            theme.textTheme.headline3?.copyWith(fontSize: 18)),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Appointments",
+                            style: theme.textTheme.headline3?.copyWith(
+                              fontSize: 18,
+                            )),
+                        const Spacer(),
+                        InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      child: ScreenAppointments(
+                                          appointment: state
+                                                  is HomePageFetchDoctorsSuccessState
+                                              ? state.appointmentList
+                                              : null),
+                                      type: PageTransitionType.rightToLeft));
+                            },
+                            child: Text("View all",
+                                style: theme.textTheme.subtitle1)),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 25.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 150.0,
+                      child: ListView.builder(
+                        itemCount: state is HomePageFetchDoctorsSuccessState
+                            ? state.appointmentList!.isEmpty
+                                ? 1
+                                : state.appointmentList!.length
+                            : 5,
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          if (state is HomePageFetchDoctorsSuccessState) {
+                            if (state.appointmentList!.isEmpty) {
+                              return SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: 150.0,
+                                child: Center(
+                                  child: Text(
+                                    'No Scheduled Appointments Found',
+                                    style: theme.textTheme.headline3?.copyWith(
+                                        fontSize: 18, color: Colors.black),
+                                  ),
+                                ),
+                              );
+                            }
+                            if (state.appointmentList![index].status ==
+                                'Scheduled') {
+                              return AppoinmentCard(
+                                  appointment: state.appointmentList![index]);
+                            } else {
+                              return const SizedBox();
+                            }
+                          }
+                          return const AppoinmentCardShimmer();
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text("Recent Prescriptions",
+                            style: theme.textTheme.headline3?.copyWith(
+                              fontSize: 18,
+                            )),
+                        const Spacer(),
+                        InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ScreenPrescriptions(
+                                        prescriptionList: state
+                                                is HomePageFetchDoctorsSuccessState
+                                            ? state.prescriptionList
+                                            : null,
+                                      )));
+                            },
+                            child: Text("View all",
+                                style: theme.textTheme.subtitle1)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 15.0),
                   SizedBox(
                     width: double.infinity,
                     height: 150.0,
                     child: ListView.builder(
                       itemCount: state is HomePageFetchDoctorsSuccessState
-                          ? state.appointmentList!.isEmpty
-                              ? 1
-                              : state.appointmentList!.length
+                          ? state.prescriptionList!.length
                           : 5,
                       scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
                       physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
                       itemBuilder: (context, index) {
+                        // var doctor = doctorList[index];
                         if (state is HomePageFetchDoctorsSuccessState) {
-                          if (state.appointmentList!.isEmpty) {
+                          if (state.prescriptionList!.isEmpty) {
                             return SizedBox(
                               width: MediaQuery.of(context).size.width,
                               height: 150.0,
@@ -123,19 +230,24 @@ class ScreenHome extends StatelessWidget {
                               ),
                             );
                           }
-                          if (state.appointmentList![index].status ==
-                              'Scheduled') {
-                            return AppoinmentCard(
-                                appointment: state.appointmentList![index]);
-                          } else {
-                            return const SizedBox();
+                          if (state.prescriptionList != null) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: PrescriptionCard(
+                                prescription: state.prescriptionList![index],
+                              ),
+                            );
                           }
+
+                          // return DoctorCard(doctor: );
                         }
-                        return const AppoinmentCardShimmer();
+                        return AppoinmentCardShimmer();
                       },
                     ),
                   ),
-                  const SizedBox(height: 25.0),
+                  const SizedBox(height: 15),
+
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
                     child: Text("Specialist",
@@ -179,7 +291,6 @@ class ScreenHome extends StatelessWidget {
                           );
                         }),
                   ),
-                  const SizedBox(height: 15),
                 ],
               ),
             ),
@@ -189,37 +300,3 @@ class ScreenHome extends StatelessWidget {
     );
   }
 }
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  //   child: Row(
-                  //     children: <Widget>[
-                  //       Text("Top Doctors",
-                  //           style: theme.textTheme.headline3?.copyWith(
-                  //             fontSize: 18,
-                  //           )),
-                  //       const Spacer(),
-                  //       Text("View all", style: theme.textTheme.subtitle1),
-                  //     ],
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 15),
-                  // SizedBox(
-                  //   width: double.infinity,
-                  //   height: 200.0,
-                  //   child: ListView.builder(
-                  //     itemCount: state is HomePageFetchDoctorsSuccessState
-                  //         ? state.doctorList!.length
-                  //         : 5,
-                  //     scrollDirection: Axis.horizontal,
-                  //     physics: const BouncingScrollPhysics(),
-                  //     shrinkWrap: true,
-                  //     itemBuilder: (context, index) {
-                  //       // var doctor = doctorList[index];
-                  //       if (state is HomePageFetchDoctorsSuccessState) {
-                  //         return DoctorCard(doctor: state.doctorList![index]);
-                  //       } else {
-                  //         return DoctorCardShimmer();
-                  //       }
-                  //     },
-                  //   ),
-                  // ),

@@ -9,12 +9,14 @@ class CustomSubmitButton extends StatelessWidget {
   final double? height;
   final double? borderRadius;
   final double? fontSize;
+  final Color? fontColr;
   const CustomSubmitButton(
       {Key? key,
       required this.text,
       required this.bgColor,
       this.height,
       this.fontSize,
+      this.fontColr,
       this.borderRadius,
       this.width})
       : super(key: key);
@@ -32,7 +34,7 @@ class CustomSubmitButton extends StatelessWidget {
       child: Text(
         text,
         style: GoogleFonts.ubuntu(
-            color: Colors.white,
+            color: fontColr ?? Colors.white,
             fontWeight: FontWeight.w400,
             fontSize: fontSize ?? 14.sp),
       ),

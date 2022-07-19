@@ -13,3 +13,14 @@ class UserAppointmentByDate extends UserAppointmentEvent {
     required this.doctorId,
   });
 }
+
+class CancelAPpointmentEvent extends UserAppointmentEvent {
+  final String appointmentId;
+  final String reason;
+  final BuildContext context;
+  CancelAPpointmentEvent({
+    required this.appointmentId,
+    required this.reason,
+    required this.context,
+  });
+}

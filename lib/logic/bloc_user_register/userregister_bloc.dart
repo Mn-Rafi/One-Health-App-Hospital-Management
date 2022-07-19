@@ -23,7 +23,7 @@ class UserregisterBloc extends Bloc<UserregisterEvent, UserregisterState> {
           throw DioError;
         }
       } catch (e) {
-        emit(UserRegisterFailedState(message: e.toString()));
+        // emit(UserRegisterFailedState(message: e.toString()));
         if (e is DioError) {
           emit(UserRegisterFailedState(message: e.response!.data["message"]));
         }

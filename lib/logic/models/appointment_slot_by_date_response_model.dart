@@ -21,13 +21,13 @@ class AppointmentSlotByDateResponse {
   });
 
   final DoctorTiming doctorTiming;
-  final List<dynamic> timeArray;
+  final List<String> timeArray;
   final String message;
 
   factory AppointmentSlotByDateResponse.fromJson(Map<String, dynamic> json) =>
       AppointmentSlotByDateResponse(
         doctorTiming: DoctorTiming.fromJson(json["doctorTiming"]),
-        timeArray: List<dynamic>.from(json["timeArray"].map((x) => x)),
+        timeArray: List<String>.from(json["timeArray"].map((x) => x)),
         message: json["message"],
       );
 

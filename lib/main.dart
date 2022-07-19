@@ -1,22 +1,27 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sizer/sizer.dart';
+
 import 'package:one_health_hospital_app/logic/bloc_get_user_profile/getprofiledata_bloc.dart';
 import 'package:one_health_hospital_app/logic/bloc_login_api/loginapi_bloc.dart';
 import 'package:one_health_hospital_app/logic/bloc_user_register/userregister_bloc.dart';
 import 'package:one_health_hospital_app/presentation/screen_splash/screen_splash.dart';
 import 'package:one_health_hospital_app/repositories/connectivity_services/connectivity_services.dart';
 import 'package:one_health_hospital_app/repositories/local_storage/store_user_details.dart';
+import 'package:one_health_hospital_app/repositories/user_appointment_services/user_appointment_services.dart';
 import 'package:one_health_hospital_app/repositories/user_get_all_appoinments/user_get_all_appoinments.dart';
 import 'package:one_health_hospital_app/repositories/user_get_doctors_services/user_get_doctor_services.dart';
 import 'package:one_health_hospital_app/repositories/user_get_profile/user_get_profile_services.dart';
 import 'package:one_health_hospital_app/repositories/user_login/user_login_services.dart';
+import 'package:one_health_hospital_app/repositories/user_prescription_services/user_prescription_services.dart';
 import 'package:one_health_hospital_app/repositories/user_register/user_register_services.dart';
 import 'package:one_health_hospital_app/themedata.dart';
-import 'package:sizer/sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await Hive.initFlutter();
   Hive.registerAdapter<UserLocalData>(UserLocalDataAdapter());
   await Hive.openBox<UserLocalData>(userHive);
@@ -57,6 +62,12 @@ class MyApp extends StatelessWidget {
           ),
           RepositoryProvider(
             create: (context) => AppointmentsServices(),
+          ),
+          RepositoryProvider(
+            create: (context) => UserAppointmentServices(),
+          ),
+          RepositoryProvider(
+            create: (context) => UserPrescriptionServices(),
           ),
         ],
         child: MultiBlocProvider(

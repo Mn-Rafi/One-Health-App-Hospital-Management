@@ -7,6 +7,7 @@ class UserRegisterServices {
       {required UserRegisterInputModel inputs}) async {
     Dio dio = Dio();
     String fileName = inputs.image.path.split('/').last;
+
     FormData formData = FormData.fromMap({
       "firstName": inputs.firstName,
       "secondName": inputs.secondName,

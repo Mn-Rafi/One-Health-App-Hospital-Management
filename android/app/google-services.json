@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "880415117031",
+    "project_id": "one-health-ced00",
+    "storage_bucket": "one-health-ced00.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880415117031:android:8fb54db236e65508cb1c42",
+        "android_client_info": {
+          "package_name": "com.brototype.one_health_hospital_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "880415117031-a780tncrssfh52sa6utfh9unamjr3umd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBiIuZCeZt8kD6UFbA-c73dbygZ6mdUOU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "880415117031-a780tncrssfh52sa6utfh9unamjr3umd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

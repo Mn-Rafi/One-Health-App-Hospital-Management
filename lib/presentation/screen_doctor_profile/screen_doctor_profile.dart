@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_submit_button.dart';
+import 'package:one_health_hospital_app/presentation/screen_book_appointment/screen_book_appointment.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:one_health_hospital_app/logic/models/doctor_response_model.dart';
@@ -70,7 +71,7 @@ class ScreenDoctorProfile extends StatelessWidget {
                         maxLines: 1,
                         textAlign: TextAlign.start,
                         style: theme.textTheme.bodyLarge!
-                            .copyWith(fontSize: 22.sp),
+                            .copyWith(fontSize: 18.sp),
                       ),
                       Text(
                         doctor.doctor!.qualification!,
@@ -115,16 +116,16 @@ class ScreenDoctorProfile extends StatelessWidget {
               itemBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(5.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(1.w),
-                    color: Colors.deepPurple,
+                    color: Colors.white,
                   ),
                   child: Text(
                     checkDays(doctor.doctor!.days!)[index],
                     style: theme.textTheme.bodyLarge!
-                        .copyWith(fontSize: 15.sp, color: Colors.white),
+                        .copyWith(fontSize: 13.sp, color: Colors.black),
                   ),
                 ),
               ),
@@ -151,12 +152,32 @@ class ScreenDoctorProfile extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(1.w),
-              color: Colors.deepPurple,
+              color: Colors.white,
             ),
             child: Text(
               '${doctor.doctor!.startTime!} - ${doctor.doctor!.endTime!}',
               style: theme.textTheme.bodyLarge!
-                  .copyWith(fontSize: 15.sp, color: Colors.white),
+                  .copyWith(fontSize: 13.sp, color: Colors.black),
+            ),
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Text('Fee',
+              style: theme.textTheme.bodyLarge!
+                  .copyWith(fontSize: 20.sp, color: Colors.black)),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 40.w, vertical: 1.h),
+            padding: const EdgeInsets.all(8.0),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(1.w),
+              color: Colors.white,
+            ),
+            child: Text(
+              '₹${doctor.doctor!.fee}',
+              style: theme.textTheme.bodyLarge!
+                  .copyWith(fontSize: 13.sp, color: Colors.black),
             ),
           ),
           SizedBox(
@@ -164,7 +185,12 @@ class ScreenDoctorProfile extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              log(DateTime.now().toString());
+              // log(DateTime.now().toString());
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ScreenBookAppointment(doctor: doctor),
+                  ));
             },
             child: CustomSubmitButton(
               text: 'Book an Appointment',
@@ -178,6 +204,7 @@ class ScreenDoctorProfile extends StatelessWidget {
     );
   }
 }
+
 
 List<String> checkDays(List<int> days) {
   List<String> daysString = [];

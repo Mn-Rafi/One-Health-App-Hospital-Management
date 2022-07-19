@@ -15,7 +15,8 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(PickImageStart());
     String? imagePath;
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: source);
+    final XFile? image =
+        await picker.pickImage(source: source, imageQuality: 50);
     if (image != null) {
       CroppedFile? croppedImage = await ImageCropper().cropImage(
         sourcePath: image.path,

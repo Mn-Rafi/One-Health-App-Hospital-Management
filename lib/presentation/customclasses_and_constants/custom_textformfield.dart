@@ -13,6 +13,10 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscure;
   final VoidCallback? suffixAction;
   final TextInputAction? nextAction;
+  final bool? enabled;
+  final int? maxLines;
+  final void Function(String)? onChanged;
+  final String? initialValue;
   final TextCapitalization? textCapitalisation;
   const CustomTextFormField({
     Key? key,
@@ -24,6 +28,10 @@ class CustomTextFormField extends StatelessWidget {
     this.obscure = false,
     this.suffixAction,
     this.nextAction,
+    this.enabled,
+    this.maxLines,
+    this.onChanged,
+    this.initialValue,
     this.textCapitalisation,
     required this.textController,
   }) : super(key: key);
@@ -37,24 +45,29 @@ class CustomTextFormField extends StatelessWidget {
       textInputAction: nextAction ?? TextInputAction.next,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: obscure,
+      enabled: enabled ?? true,
+      initialValue: initialValue,
       controller: textController,
       keyboardType: keyBoardType,
       validator: validator,
+      maxLines: maxLines ?? 1,
+      onChanged: onChanged ?? (value) {},
       keyboardAppearance: Brightness.dark,
       style: GoogleFonts.ubuntu(color: Colors.black),
       decoration: InputDecoration(
-        suffixIcon: GestureDetector(
-            onTap: suffixAction ?? () {},
-            child: Icon(
-              sufficiconData,
-              size: 17.sp,
-              color: kPrimaryColor,
-            )),
+        // suffixIcon: GestureDetector(
+        //     onTap: suffixAction ?? () {},
+        //     child: Icon(
+        //       sufficiconData,
+        //       size: 17.sp,
+        //       color: kPrimaryColor,
+        //     )),
         prefixIcon: Icon(
           iconData,
           size: 17.sp,
           color: kPrimaryColor,
         ),
+        labelText: hintText,
         hintStyle: normalTextStyle,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

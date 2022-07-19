@@ -13,10 +13,10 @@ class AppointmentsServices {
 
     dio.options.headers["auth-token"] = token;
     // Response response = await dio.get(
-    //   'https://onehealthhospital.site/api/appointment/$id',
+    //   'https://onehealthhospital.online/api/appointment/$id',
     // );
     final response = await dio.get(
-      'https://onehealthhospital.site/api/appointment/$id',
+      'https://onehealthhospital.online/api/appointment/$id',
     );
     log(response.toString());
 
