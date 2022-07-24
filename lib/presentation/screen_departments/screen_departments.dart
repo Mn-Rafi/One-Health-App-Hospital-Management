@@ -96,9 +96,7 @@ class ScreenDepartments extends StatelessWidget {
                       Expanded(child: BlocBuilder<DepartmentsanddoctorsBloc,
                           DepartmentsanddoctorsState>(
                         builder: (context, state) {
-                          if (state is DoctorsDetailsLoadedState) {
-                            
-                          }
+                          if (state is DoctorsDetailsLoadedState) {}
                           return ListView.builder(
                               itemCount: state is DoctorsDetailsLoadedState
                                   ? state.doctorList!.length

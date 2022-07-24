@@ -463,21 +463,29 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
   }
 
   DateTime initialDate = DateTime.now();
+
   DateTime intitalDate(List<int> days) {
-    if (days.contains(initialDate.weekday)) {
+    if (days.contains(initialDate.weekday) == false) {
+      log('initialDate.weekday: ${initialDate.weekday}');
       initialDate = initialDate.add(const Duration(days: 1));
       if (days.contains(initialDate.weekday)) {
+        log('initialDate.weekday: ${initialDate.weekday}');
         return intitalDate(days);
       } else {
         return initialDate;
       }
+    } else {
+      return initialDate;
     }
-    return initialDate;
   }
 
   // Future picktime(BuildContext context, )
   Future pickdate(BuildContext context, List<int> days) async {
     // final initialDate = DateTime.parse(_dateController.text);
+
+    DateTime initialDateOf = await intitalDate(days);
+
+    log('initialDateOf: $initialDateOf');
 
     final _date = await showDatePicker(
       selectableDayPredicate: (DateTime val) {
@@ -487,10 +495,11 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
           return false;
         }
       },
+
       context: context,
       initialDate: _dateController.text.isNotEmpty
           ? DateTime.parse(_dateController.text)
-          : DateTime.now().add(Duration(days: 1)),
+          : initialDateOf,
       // _dateController.text.isEmpty
       //     ? DateTime.now()
       //     : DateTime.parse(_dateController.text),
@@ -552,16 +561,11 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
     print(_dateController.text);
     print('____________');
     print(now.toString().substring(0, 10));
-    // if (_dateController.text == now.toString().substring(0, 10)) {
-    //   if (now.hour >= parsedTime.hour) {
-    //     if (formattedTime[2] != ':') {
-    //       formattedTime = '0$formattedTime';
-    //     }
-    //     startTime = formattedTime;
-    //   } else {
-    //     print('nothing to change in 1 $startTime');
-    //   }
-    // }
+
+    startTime =
+        startTime[0] == '0' || startTime[0] == '1' ? startTime : '0$startTime';
+    endTime = endTime[0] == '0' || endTime[0] == '1' ? endTime : '0$endTime';
+
     List<String> slots = timeSlots;
     int? startingPoint;
     int? endingPoint;
@@ -569,11 +573,12 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
       print('^^^^^^^^^^^^^^^^^');
       print(slots[i].substring(0, 2) + startTime.substring(0, 2));
       print('^^^^^^^^^^^^^^^^^');
-      if (slots[i] == startTime) {
+      if (timeSlots[i] == startTime) {
         print('starting point $i');
         startingPoint = i;
       }
-      if (slots[i] == endTime) {
+      log('${slots[i] == endTime} ');
+      if (timeSlots[i] == endTime) {
         print('ending point $i');
         endingPoint = i;
       }

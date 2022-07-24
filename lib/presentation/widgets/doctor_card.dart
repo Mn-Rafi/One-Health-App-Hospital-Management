@@ -85,12 +85,15 @@ class DoctorCard extends StatelessWidget {
                   //     textAlign: TextAlign.center,
                   //     style: theme.textTheme.subtitle2!
                   //         .copyWith(fontSize: 14, color: Colors.brown[900])),
-                  Text(doctor.doctor!.expertise!,
-                      overflow: TextOverflow.clip,
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.subtitle2!
-                          .copyWith(fontSize: 14, color: Colors.brown[900])),
+                  SizedBox(
+                    width: 42.w,
+                    child: Text(doctor.doctor!.expertise!,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        textAlign: TextAlign.start,
+                        style: theme.textTheme.subtitle2!
+                            .copyWith(fontSize: 14, color: Colors.brown[900])),
+                  ),
                   const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

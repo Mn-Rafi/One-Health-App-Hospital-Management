@@ -34,10 +34,9 @@ class GetAllDoctorsServices {
     log(response.toString());
     if (response.statusCode == 200 || response.statusCode == 201) {
       // log(response.toString());
-      doctorResponseModel = (response.data)
-          .map((i) => DoctorResponseModelForSearch.fromJson(i.doctor))
-          .toList();
-      // log(doctorResponseModel.toString());
+      doctorResponseModel = DoctorResponseModelForSearch.fromJson(
+        response.data,
+      );
       print('success');
       return doctorResponseModel;
     }
