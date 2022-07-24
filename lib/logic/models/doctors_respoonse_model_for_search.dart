@@ -1,18 +1,23 @@
-class DoctorResponseModel {
-  Doctor? doctor;
+class DoctorResponseModelForSearch {
+  List<Doctor>? doctor;
   String? message;
 
-  DoctorResponseModel({this.doctor, this.message});
+  DoctorResponseModelForSearch({doctor, message});
 
-  DoctorResponseModel.fromJson(Map<String, dynamic> json) {
-    doctor = json['doctor'] != null ? Doctor.fromJson(json['doctor']) : null;
+  DoctorResponseModelForSearch.fromJson(Map<String, dynamic> json) {
+    if (json['doctor'] != null) {
+      doctor = <Doctor>[];
+      json['doctor'].forEach((v) {
+        doctor!.add(Doctor.fromJson(v));
+      });
+    }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (doctor != null) {
-      data['doctor'] = doctor!.toJson();
+      data['doctor'] = doctor!.map((v) => v.toJson()).toList();
     }
     data['message'] = message;
     return data;
@@ -42,27 +47,26 @@ class Doctor {
   String? phone;
 
   Doctor(
-      {
-      this.sId,
-      this.name,
-      this.email,
-      this.department,
-      this.qualification,
-      this.expertise,
-      this.experience,
-      this.days,
-      this.startTime,
-      this.endTime,
-      this.fee,
-      this.password,
-      this.image,
-      this.admin,
-      this.active,
-      this.request,
-      this.createdAt,
-      this.updatedAt,
-      this.iV,
-      this.phone});
+      {sId,
+      name,
+      email,
+      department,
+      qualification,
+      expertise,
+      experience,
+      days,
+      startTime,
+      endTime,
+      fee,
+      password,
+      image,
+      admin,
+      active,
+      request,
+      createdAt,
+      updatedAt,
+      iV,
+      phone});
 
   Doctor.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];

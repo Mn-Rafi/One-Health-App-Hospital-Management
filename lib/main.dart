@@ -1,6 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -19,10 +23,38 @@ import 'package:one_health_hospital_app/repositories/user_prescription_services/
 import 'package:one_health_hospital_app/repositories/user_register/user_register_services.dart';
 import 'package:one_health_hospital_app/themedata.dart';
 
-void main() async {
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'channel_id', 'channel_name',
+    description: 'channel_description',
+    importance: Importance.high,
+    showBadge: true,
+    enableLights: true,
+    enableVibration: true,
+    playSound: true);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('A bg message just showed up :  ${message.messageId}');
+}
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
   await Hive.initFlutter();
+  await GetStorage.init();
   Hive.registerAdapter<UserLocalData>(UserLocalDataAdapter());
   await Hive.openBox<UserLocalData>(userHive);
   runApp(const MyApp());
@@ -86,7 +118,7 @@ class MyApp extends StatelessWidget {
               ),
             )
           ],
-          child: MaterialApp(
+          child: GetMaterialApp(
             debugShowCheckedModeBanner: false,
             darkTheme: darkThemeData(context),
             themeMode: ThemeMode.system,

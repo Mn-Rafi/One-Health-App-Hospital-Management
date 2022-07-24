@@ -85,14 +85,14 @@ class ScreenHome extends StatelessWidget {
                             const Icon(Icons.search, color: kPrimaryLightColor),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ScreenDepartments(
-                              department:
-                                  state is HomePageFetchDoctorsSuccessState
-                                      ? state.departmentList!
-                                      : null,
-                              isSearching: true,
-                              currentIndex: 0,
-                            ),
+                            builder: (context) => ScreenSearch(
+                                // department:
+                                //     state is HomePageFetchDoctorsSuccessState
+                                //         ? state.departmentList!
+                                //         : null,
+                                // isSearching: true,
+                                // currentIndex: 0,
+                                ),
                           ));
                         },
                       ),
@@ -152,7 +152,12 @@ class ScreenHome extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           if (state is HomePageFetchDoctorsSuccessState) {
-                            if (state.appointmentList!.isEmpty) {
+                            if (state.appointmentList!.where((element) {
+                              if (element.status == 'Scheduled') {
+                                return true;
+                              }
+                              return false;
+                            }).isEmpty) {
                               return SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 height: 150.0,
@@ -217,20 +222,7 @@ class ScreenHome extends StatelessWidget {
                       itemBuilder: (context, index) {
                         // var doctor = doctorList[index];
                         if (state is HomePageFetchDoctorsSuccessState) {
-                          if (state.prescriptionList!.isEmpty) {
-                            return SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              height: 150.0,
-                              child: Center(
-                                child: Text(
-                                  'No Scheduled Appointments Found',
-                                  style: theme.textTheme.headline3?.copyWith(
-                                      fontSize: 18, color: Colors.black),
-                                ),
-                              ),
-                            );
-                          }
-                          if (state.prescriptionList != null) {
+                          if (state.prescriptionList != []) {
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8),
@@ -239,7 +231,17 @@ class ScreenHome extends StatelessWidget {
                               ),
                             );
                           }
-
+                          return SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 150.0,
+                            child: Center(
+                              child: Text(
+                                'No Prescriptions found',
+                                style: theme.textTheme.headline3?.copyWith(
+                                    fontSize: 18, color: Colors.black),
+                              ),
+                            ),
+                          );
                           // return DoctorCard(doctor: );
                         }
                         return AppoinmentCardShimmer();

@@ -8,7 +8,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 
 class SignUpToBloodBankIntroductionPage extends StatelessWidget {
-  const SignUpToBloodBankIntroductionPage({Key? key}) : super(key: key);
+  SignUpToBloodBankIntroductionPage({Key? key}) : super(key: key);
 
   static Box<UserLocalData> userLocalData = Hive.box<UserLocalData>(userHive);
   static List<UserLocalData> userLocalDataList = userLocalData.values.toList();
@@ -110,79 +110,38 @@ class SignUpToBloodBankIntroductionPage extends StatelessWidget {
               SizedBox(
                 height: 2.h,
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Image.asset('images/Frame 48.png'),
-                          Text(
-                            'women with complications of pregnancy',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
+              SizedBox(
+                height: 15.h,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      color: Colors.grey,
+                      width: 0.5,
+                      height: 100,
                     ),
                   ),
-                  Container(
-                    color: Colors.grey,
-                    width: 0.5,
-                    height: 100,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Image.asset('images/Frame 49.png'),
-                          Text(
-                              'children with severe anemia as a result of malnutrition',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 10))
-                        ],
-                      ),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => SizedBox(
+                    width: 45.w,
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          listofImageOne[index],
+                        ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        Text(
+                          listOftitleOne[index],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
                     ),
                   ),
-                  Container(
-                    color: Colors.grey,
-                    width: 0.5,
-                    height: 100,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Image.asset('images/Frame 50.png'),
-                          Text('people with severe trauma following disasters',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 10))
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    color: Colors.grey,
-                    width: 0.5,
-                    height: 100,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Image.asset('images/Frame 51.png'),
-                          Text('complex medical procedures and cancer patients',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 10))
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                  itemCount: 4,
+                ),
               ),
               SizedBox(
                 height: 2.h,
@@ -230,6 +189,9 @@ class SignUpToBloodBankIntroductionPage extends StatelessWidget {
                     )),
               ),
               Divider(),
+              SizedBox(
+                height: 2.h,
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -238,80 +200,44 @@ class SignUpToBloodBankIntroductionPage extends StatelessWidget {
                       ?.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Image.asset('images/Frame 64.png'),
-                          Text(
-                            'Registration, where you sign up and go over eligibility.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
+              SizedBox(
+                height: 2.h,
+              ),
+              SizedBox(
+                height: 15.h,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      color: Colors.grey,
+                      width: 0.5,
+                      height: 100,
                     ),
                   ),
-                  Container(
-                    color: Colors.grey,
-                    width: 0.5,
-                    height: 100,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Image.asset('images/Frame 65.png'),
-                          Text('Mini-physical, where your health is evaluated.',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 10))
-                        ],
-                      ),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => SizedBox(
+                    width: 45.w,
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          listofImageTwo[index],
+                        ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        Text(
+                          listOftitleTwo[index],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
                     ),
                   ),
-                  Container(
-                    color: Colors.grey,
-                    width: 0.5,
-                    height: 100,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Image.asset('images/Frame 66.png'),
-                          Text(
-                              'The donation, which only takes about eight to ten minutes.',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 10))
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    color: Colors.grey,
-                    width: 0.5,
-                    height: 100,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Image.asset('images/Frame 67.png'),
-                          Text(
-                              'Refreshments, where you get a snack and drink afterwards.',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 10))
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                  itemCount: 4,
+                ),
+              ),
+              SizedBox(
+                height: 2.h,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -330,6 +256,9 @@ class SignUpToBloodBankIntroductionPage extends StatelessWidget {
                     )
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 2.h,
               ),
               Container(
                 width: double.infinity,
@@ -353,4 +282,32 @@ class SignUpToBloodBankIntroductionPage extends StatelessWidget {
       ),
     );
   }
+
+  List<String> listOftitleOne = [
+    'women with complications of pregnancy',
+    'children with severe anemia as a result of malnutrition',
+    'people with severe trauma following disasters',
+    'complex medical procedures and cancer patients'
+  ];
+
+  List<String> listofImageOne = [
+    'images/Frame 48.png',
+    'images/Frame 49.png',
+    'images/Frame 50.png',
+    'images/Frame 51.png'
+  ];
+
+  List<String> listOftitleTwo = [
+    'Registration, where you sign up and go over eligibility.',
+    'Mini-physical, where your health is evaluated.',
+    'The donation, which only takes about eight to ten minutes.',
+    'Refreshments, where you get a snack and drink afterwards.',
+  ];
+
+  List<String> listofImageTwo = [
+    'images/Frame 64.png',
+    'images/Frame 65.png',
+    'images/Frame 66.png',
+    'images/Frame 67.png'
+  ];
 }

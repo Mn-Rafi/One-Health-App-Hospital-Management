@@ -1,16 +1,22 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:one_health_hospital_app/logic/bloc_get_user_profile/getprofiledata_bloc.dart';
+import 'package:one_health_hospital_app/main.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_submit_button.dart';
 import 'package:one_health_hospital_app/presentation/screen_edit_profile/custom_text_field.dart';
 import 'package:one_health_hospital_app/presentation/screen_edit_profile/password_change_alert.dart';
 import 'package:one_health_hospital_app/presentation/screen_signin_or_register/screen_signin_or_register.dart';
+import 'package:one_health_hospital_app/presentation/screen_splash/screen_splash.dart';
 import 'package:one_health_hospital_app/repositories/user_get_profile/user_get_profile_services.dart';
 import 'package:one_health_hospital_app/themedata.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class ScreenEditProfile extends StatefulWidget {
@@ -52,6 +58,7 @@ class _ScreenEditProfileState extends State<ScreenEditProfile> {
   final TextEditingController _genderController = TextEditingController();
 
   bool isImageChanged = false;
+  final getBox = GetStorage();
 
   String? newImagepath;
 
@@ -102,14 +109,9 @@ class _ScreenEditProfileState extends State<ScreenEditProfile> {
                                   actions: [
                                     TextButton(
                                       child: Text('Yes'),
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ScreenSigninOrRegister(),
-                                                ),
-                                                (route) => false);
+                                      onPressed: () async {
+                                        getBox.write('isLoggedIn', false);
+                                        Get.offAll(ScreenSplash());
                                       },
                                     ),
                                     TextButton(
@@ -162,6 +164,7 @@ class _ScreenEditProfileState extends State<ScreenEditProfile> {
                                     CroppedFile? croppedImage =
                                         await ImageCropper().cropImage(
                                       sourcePath: image.path,
+                                      compressQuality: 50,
                                       aspectRatio: const CropAspectRatio(
                                           ratioX: 1, ratioY: 1),
                                       uiSettings: [

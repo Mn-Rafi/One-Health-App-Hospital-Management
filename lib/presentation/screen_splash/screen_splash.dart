@@ -1,6 +1,11 @@
+import 'dart:developer';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:one_health_hospital_app/logic/cubit_splash_screen/splashscreen_cubit.dart';
+import 'package:one_health_hospital_app/main.dart';
 import 'package:one_health_hospital_app/presentation/screen_bottom_navigatio/screen_bottom_navigation.dart';
 import 'package:one_health_hospital_app/presentation/screen_home/screen_home.dart';
 import 'package:one_health_hospital_app/presentation/screen_signin_or_register/screen_signin_or_register.dart';
@@ -16,27 +21,111 @@ class ScreenSplash extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SplashscreenCubit(),
-      child: BlocListener<SplashscreenCubit, SplashscreenState>(
-        listener: (context, state) {
-          if (state is SplashscreenEnd) {
-            Navigator.pushReplacement(
-                context,
-                PageTransition(
-                    child: ScreenSigninOrRegister(),
-                    type: PageTransitionType.rightToLeft,
-                    alignment: Alignment.center));
-          }
-          if (state is NavigateToHome) {
-            Navigator.pushReplacement(
-                context,
-                PageTransition(
-                    child: ScreenBottomNavigation(),
-                    type: PageTransitionType.rightToLeft,
-                    alignment: Alignment.center));
-          }
-        },
-        child: const ScreenSplashWidget(),
-      ),
+      child: SplashScreenLogic(),
+    );
+  }
+}
+
+class SplashScreenLogic extends StatefulWidget {
+  const SplashScreenLogic({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<SplashScreenLogic> createState() => _SplashScreenLogicState();
+}
+
+class _SplashScreenLogicState extends State<SplashScreenLogic> {
+  int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification!;
+      AndroidNotification android = message.notification!.android!;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification notification = message.notification!;
+      AndroidNotification android = message.notification!.android!;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title!),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body!)],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+  }
+
+  void showNotification() {
+    setState(() {
+      _counter++;
+    });
+    flutterLocalNotificationsPlugin.show(
+        0,
+        "Testing $_counter",
+        "How you doin ?",
+        NotificationDetails(
+            android: AndroidNotificationDetails(channel.id, channel.name,
+                channelDescription: channel.description,
+                importance: Importance.high,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher')));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<SplashscreenCubit, SplashscreenState>(
+      listener: (context, state) {
+        if (state is SplashscreenEnd) {
+          log('Matterr');
+          Navigator.pushReplacement(
+              context,
+              PageTransition(
+                  child: const ScreenSigninOrRegister(),
+                  type: PageTransitionType.rightToLeft,
+                  alignment: Alignment.center));
+        }
+        if (state is NavigateToHome) {
+          log('No Matter');
+          Navigator.pushReplacement(
+              context,
+              PageTransition(
+                child: const ScreenBottomNavigation(),
+                type: PageTransitionType.rightToLeft,
+                alignment: Alignment.center,
+              ));
+        }
+      },
+      child: const ScreenSplashWidget(),
     );
   }
 }

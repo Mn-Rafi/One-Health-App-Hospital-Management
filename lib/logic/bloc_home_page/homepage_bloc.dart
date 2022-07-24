@@ -9,9 +9,11 @@ import 'package:one_health_hospital_app/logic/models/all_appointments_response_m
 import 'package:one_health_hospital_app/logic/models/all_departments_response_model.dart';
 import 'package:one_health_hospital_app/logic/models/all_doctor_response_model.dart';
 import 'package:one_health_hospital_app/logic/models/prescriptions_response_model.dart';
+import 'package:one_health_hospital_app/logic/models/user_profile_model.dart';
 import 'package:one_health_hospital_app/repositories/local_storage/store_user_details.dart';
 import 'package:one_health_hospital_app/repositories/user_get_all_appoinments/user_get_all_appoinments.dart';
 import 'package:one_health_hospital_app/repositories/user_get_doctors_services/user_get_doctor_services.dart';
+import 'package:one_health_hospital_app/repositories/user_get_profile/user_get_profile_services.dart';
 import 'package:one_health_hospital_app/repositories/user_prescription_services/user_prescription_services.dart';
 import 'package:one_health_hospital_app/themedata.dart';
 
@@ -23,26 +25,44 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
   final GetAllDepartments _allDepartmentsServices;
   final AppointmentsServices _appointmentsServices;
   final UserPrescriptionServices _userPrescriptionServices;
+  final GetUserProfileServices _getUserProfileServices;
   final BuildContext context;
   HomepageBloc(
     this._allDoctorsServices,
     this._allDepartmentsServices,
     this._appointmentsServices,
     this._userPrescriptionServices,
+    this._getUserProfileServices,
     this.context,
   ) : super(HomepageInitial()) {
     List<Doctor>? doctorsList = [];
     List<Department>? departmentsList = [];
     List<Appointment>? appointmentsList = [];
     List<Prescription>? prescriptionsList = [];
+    GetPrfoleResponseModel? profileresponse;
     final Box<UserLocalData> userLocalData = Hive.box<UserLocalData>(userHive);
     final List<UserLocalData> userLocalDataList = userLocalData.values.toList();
     log(userLocalDataList[0].token);
     on<HomepageEvent>((event, emit) async {
+      try {
+        final Response responseForm =
+            await _getUserProfileServices.getUserProfileDetails(
+          token: userLocalDataList[0].token,
+          id: userLocalDataList[0].id,
+        );
+        if (responseForm.statusCode == 200) {
+          profileresponse = GetPrfoleResponseModel.fromJson(responseForm.data);
+          log(responseForm.toString());
+        } else {
+          throw DioError;
+        }
+      } catch (e) {}
       emit(HomepageInitialState(
-        userImage: userLocalDataList[0].image,
-        userName: userLocalDataList[0].firstName,
+        userImage: profileresponse!.user!.image ?? userLocalDataList[0].image,
+        userName:
+            profileresponse!.user!.firstName ?? userLocalDataList[0].firstName,
       ));
+
       try {
         log(userLocalDataList[0].id);
         final response = await _allDoctorsServices.getAllDoctors(
@@ -91,8 +111,9 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
           appointmentList: appointmentsList,
           departmentList: departmentsList,
           doctorList: doctorsList,
-          userImage: userLocalDataList[0].image,
-          userName: userLocalDataList[0].firstName,
+          userImage: profileresponse!.user!.image ?? userLocalDataList[0].image,
+          userName: profileresponse!.user!.firstName ??
+              userLocalDataList[0].firstName,
         ));
 
         try {
@@ -110,8 +131,10 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageState> {
               appointmentList: appointmentsList,
               departmentList: departmentsList,
               doctorList: doctorsList,
-              userImage: userLocalDataList[0].image,
-              userName: userLocalDataList[0].firstName,
+              userImage:
+                  profileresponse!.user!.image ?? userLocalDataList[0].image,
+              userName: profileresponse!.user!.firstName ??
+                  userLocalDataList[0].firstName,
             ));
           }
         } catch (e) {

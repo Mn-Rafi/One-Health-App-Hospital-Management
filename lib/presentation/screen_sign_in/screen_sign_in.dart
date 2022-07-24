@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:one_health_hospital_app/logic/bloc_login_api/loginapi_bloc.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_image_card.dart';
@@ -36,6 +37,7 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
     Key? key,
   }) : super(key: key);
 
+  final getBox = GetStorage();
   static TextEditingController emailController = TextEditingController();
   static TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -168,9 +170,7 @@ class SignInPageBodyWidget extends StatelessWidget with TextFieldValidator {
                           }
                           if (state is LoginapiLoadedState) {
                             showSnackBar(text: state.message, context: context);
-                            SharedPreferences.getInstance().then((prefs) {
-                              prefs.setBool('isLoggedIn', true);
-                            });
+                            getBox.write('isLoggedIn', true);
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 PageTransition(

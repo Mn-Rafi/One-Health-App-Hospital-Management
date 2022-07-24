@@ -28,7 +28,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscure = false,
     this.suffixAction,
     this.nextAction,
-    this.enabled,
+    this.enabled =  true,
     this.maxLines,
     this.onChanged,
     this.initialValue,
@@ -49,34 +49,49 @@ class CustomTextFormField extends StatelessWidget {
       initialValue: initialValue,
       controller: textController,
       keyboardType: keyBoardType,
+      
       validator: validator,
       maxLines: maxLines ?? 1,
       onChanged: onChanged ?? (value) {},
       keyboardAppearance: Brightness.dark,
-      style: GoogleFonts.ubuntu(color: Colors.black),
+      style: GoogleFonts.ubuntu(color: enabled! ? Colors.deepPurple : Colors.red),
       decoration: InputDecoration(
-        // suffixIcon: GestureDetector(
-        //     onTap: suffixAction ?? () {},
-        //     child: Icon(
-        //       sufficiconData,
-        //       size: 17.sp,
-        //       color: kPrimaryColor,
-        //     )),
+        suffixIcon: sufficiconData != null
+            ? GestureDetector(
+                onTap: suffixAction ?? () {},
+                child: Icon(
+                  sufficiconData,
+                  size: 17.sp,
+                  color: kPrimaryColor,
+                ))
+            : null,
         prefixIcon: Icon(
           iconData,
           size: 17.sp,
           color: kPrimaryColor,
         ),
         labelText: hintText,
+        labelStyle: TextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w400,
+          color: Colors.black,
+        ),
         hintStyle: normalTextStyle,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(
-            width: 0,
+            width: 0.1,
             style: BorderStyle.none,
           ),
         ),
-        hintText: hintText,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
+            width: 0.1,
+            style: BorderStyle.none,
+          ),
+        ),
+        // hintText: hintText,
         filled: true,
         fillColor: Colors.white,
       ),

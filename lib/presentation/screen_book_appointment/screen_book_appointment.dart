@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
 import 'package:one_health_hospital_app/logic/bloc_user_appointment/user_appointment_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:one_health_hospital_app/logic/models/doctor_response_model.dart'
 import 'package:one_health_hospital_app/logic/validation_mixin/vaidator_mixin.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_submit_button.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_textformfield.dart';
+import 'package:one_health_hospital_app/presentation/screen_book_appointment/screen_confirm_booking.dart';
 import 'package:one_health_hospital_app/presentation/screen_bottom_navigatio/screen_bottom_navigation.dart';
 import 'package:one_health_hospital_app/repositories/local_storage/store_user_details.dart';
 import 'package:one_health_hospital_app/repositories/user_appointment_services/user_appointment_services.dart';
@@ -54,6 +56,7 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
   UserLocalData? userData;
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
+  final PageController pageViewController = PageController();
 
   @override
   void initState() {
@@ -158,207 +161,292 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
                     state.userLocalDataList[0].phone.toString().substring(3);
                 return SafeArea(
                   child: SingleChildScrollView(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.h),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 4.h,
-                            ),
-                            Text(
-                              "Book Appointment",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle2!
-                                  .copyWith(
-                                    fontSize: 18,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          Text(
+                            "Schedule An Appointment",
+                            style:
+                                Theme.of(context).textTheme.subtitle2!.copyWith(
+                                      fontSize: 18,
+                                    ),
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Image.network(
+                            'https://cdn-icons-png.flaticon.com/512/3301/3301556.png',
+                            // height: 100.h,
+                            width: 60.w,
+                          ),
+                          SizedBox(
+                            height: 60.h,
+                            child: PageView(
+                              controller: pageViewController,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10.w, vertical: 1.h),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 2.h,
+                                      ),
+                                      CustomTextFormField(
+                                          validator: (val) =>
+                                              isNameValid(val, 'patient name'),
+                                          hintText: 'Patient Name',
+                                          keyBoardType: TextInputType.name,
+                                          iconData: Icons.person,
+                                          textController: _nameController),
+                                      SizedBox(height: 2.h),
+                                      CustomTextFormField(
+                                          validator: (val) => isAgeValid(val),
+                                          hintText: 'Age',
+                                          keyBoardType: TextInputType.name,
+                                          iconData:
+                                              Icons.nature_people_outlined,
+                                          textController: _ageController),
+                                      SizedBox(height: 2.h),
+                                      CustomTextFormField(
+                                          validator: (val) => isValid(
+                                              nameOFFiled: 'gender',
+                                              value: val),
+                                          hintText: 'Gender',
+                                          keyBoardType: TextInputType.name,
+                                          iconData: Icons.transgender,
+                                          textController: _genderController),
+                                      SizedBox(height: 2.h),
+                                      CustomTextFormField(
+                                          validator: (val) =>
+                                              isMobileValid(val),
+                                          hintText: 'Phone Number',
+                                          keyBoardType: TextInputType.name,
+                                          iconData: Icons.phone,
+                                          textController: _phoneController),
+                                      SizedBox(height: 2.h),
+                                      CustomTextFormField(
+                                          // maxLines: 2,
+                                          enabled: false,
+                                          hintText: 'Appointment to',
+                                          keyBoardType: TextInputType.name,
+                                          iconData: Icons.local_hospital_sharp,
+                                          textController: _doctorController),
+                                      SizedBox(height: 2.h),
+                                      InkWell(
+                                        onTap: () {
+                                          pageViewController.jumpToPage(1);
+                                        },
+                                        child: const CustomSubmitButton(
+                                            text: 'Next',
+                                            bgColor: Colors.redAccent),
+                                      ),
+                                    ],
                                   ),
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            CustomTextFormField(
-                                validator: (val) =>
-                                    isNameValid(val, 'patient name'),
-                                hintText: 'Patient Name',
-                                keyBoardType: TextInputType.name,
-                                iconData: Icons.person,
-                                textController: _nameController),
-                            SizedBox(height: 2.h),
-                            CustomTextFormField(
-                                validator: (val) => isAgeValid(val),
-                                hintText: 'Age',
-                                keyBoardType: TextInputType.name,
-                                iconData: Icons.nature_people_outlined,
-                                textController: _ageController),
-                            SizedBox(height: 2.h),
-                            CustomTextFormField(
-                                validator: (val) =>
-                                    isValid(nameOFFiled: 'gender', value: val),
-                                hintText: 'Gender',
-                                keyBoardType: TextInputType.name,
-                                iconData: Icons.transgender,
-                                textController: _genderController),
-                            SizedBox(height: 2.h),
-                            CustomTextFormField(
-                                validator: (val) => isMobileValid(val),
-                                hintText: 'Phone Number',
-                                keyBoardType: TextInputType.name,
-                                iconData: Icons.phone,
-                                textController: _phoneController),
-                            SizedBox(height: 2.h),
-                            CustomTextFormField(
-                                // maxLines: 2,
-                                validator: (val) =>
-                                    isValid(nameOFFiled: 'reason', value: val),
-                                hintText: 'Reason for appointment...',
-                                keyBoardType: TextInputType.name,
-                                iconData: Icons.note_add_sharp,
-                                textController: _reasonController),
-                            SizedBox(height: 2.h),
-                            CustomTextFormField(
-                                // maxLines: 2,
-                                enabled: false,
-                                hintText: 'Appointment to',
-                                keyBoardType: TextInputType.name,
-                                iconData: Icons.local_hospital_sharp,
-                                textController: _doctorController),
-                            SizedBox(height: 2.h),
-                            CustomTextFormField(
-                                // maxLines: 2,
-                                enabled: false,
-                                hintText: 'Fee amount',
-                                keyBoardType: TextInputType.name,
-                                iconData: Icons.money,
-                                textController: _feeController),
-                            SizedBox(height: 2.h),
-                            InkWell(
-                              onTap: () async {
-                                _dateController.text = await pickdate(
-                                    context, widget.doctor.doctor!.days!);
-                                context
-                                    .read<UserAppointmentBloc>()
-                                    .add(UserAppointmentByDate(
-                                      dateTime:
-                                          DateTime.parse(_dateController.text),
-                                      doctorId: widget.doctor.doctor!.sId!,
-                                      context: context,
-                                    ));
-                              },
-                              child: CustomTextFormField(
-                                validator: (val) =>
-                                    isValid(nameOFFiled: 'date', value: val),
-                                // maxLines: 2,
-                                enabled: false,
-                                hintText: 'Select Date',
-                                keyBoardType: TextInputType.name,
-                                iconData: Icons.date_range,
-                                textController: _dateController,
-                              ),
-                            ),
-                            SizedBox(height: 2.h),
-                            if (_dateController.text != '')
-                              InkWell(
-                                onTap: () {
-                                  final List<String> timeList = availableSlots(
-                                      timeArray: state
-                                          .appointmentSlotByDateResponse
-                                          .timeArray,
-                                      endTime: state
-                                          .appointmentSlotByDateResponse
-                                          .doctorTiming
-                                          .endTime,
-                                      startTime: state
-                                          .appointmentSlotByDateResponse
-                                          .doctorTiming
-                                          .startTime);
-                                  // await Future.delayed(Duration(seconds: 1));
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                          title: const Text(
-                                            'Choose an available time slot',
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                            ),
-                                          ),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20))),
-                                          content: SizedBox(
-                                            width: double.maxFinite,
-                                            child: ListView.builder(
-                                              // physics: const NeverScrollableScrollPhysics(),
-                                              itemCount: timeList.length,
-                                              shrinkWrap: true,
-                                              itemBuilder: (context, index) {
-                                                return ListTile(
-                                                  title: Text(timeList[index]),
-                                                  onTap: () {
-                                                    _timeController.text =
-                                                        timeList[index];
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                          )));
-                                },
-                                child: CustomTextFormField(
-                                  validator: (val) =>
-                                      isValid(nameOFFiled: 'time', value: val),
-                                  // maxLines: 2,
-                                  enabled: false,
-                                  hintText: 'Select Time',
-                                  keyBoardType: TextInputType.name,
-                                  iconData: Icons.access_time,
-                                  textController: _timeController,
                                 ),
-                              ),
-                            if (_dateController.text != '')
-                              SizedBox(height: 2.h),
-                            if (!isLoading)
-                              InkWell(
-                                onTap: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    final options = {
-                                      'key': 'rzp_test_NibFswO46i1XDM',
-                                      'amount': 100 * 100,
-                                      'name': 'Acme Corp.',
-                                      'description': 'Fine T-Shirt',
-                                      'prefill': {
-                                        'contact':
-                                            state.userLocalDataList[0].phone,
-                                        'email':
-                                            state.userLocalDataList[0].email,
-                                      }
-                                    };
-                                    _razorpay.open(options);
-                                  } else {
-                                    if (_dateController.text.isEmpty) {
-                                      showSnackBar(
-                                          text: 'Please select date',
-                                          context: context);
-                                    } else if (_timeController.text.isEmpty) {
-                                      showSnackBar(
-                                          text: 'Please select time',
-                                          context: context);
-                                    }
-                                  }
-                                },
-                                child: CustomSubmitButton(
-                                    text: 'Book Appointment',
-                                    bgColor: Colors.redAccent),
-                              )
-                            else
-                              CustomLoadingSubmitButton(
-                                  text: 'Book Appointment',
-                                  bgColor: Colors.redAccent)
-                          ],
-                        ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10.w, vertical: 1.h),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: 2.h),
+                                      CustomTextFormField(
+                                          // maxLines: 2,
+                                          validator: (val) => isValid(
+                                              nameOFFiled: 'reason',
+                                              value: val),
+                                          hintText: 'Reason for appointment...',
+                                          keyBoardType: TextInputType.name,
+                                          iconData: Icons.note_add_sharp,
+                                          textController: _reasonController),
+                                      SizedBox(height: 2.h),
+                                      CustomTextFormField(
+                                          // maxLines: 2,
+                                          enabled: false,
+                                          hintText: 'Fee amount',
+                                          keyBoardType: TextInputType.name,
+                                          iconData: Icons.money,
+                                          textController: _feeController),
+                                      SizedBox(height: 2.h),
+                                      InkWell(
+                                        onTap: () async {
+                                          _dateController.text = await pickdate(
+                                              context,
+                                              widget.doctor.doctor!.days!);
+                                          context
+                                              .read<UserAppointmentBloc>()
+                                              .add(UserAppointmentByDate(
+                                                dateTime: DateTime.parse(
+                                                    _dateController.text),
+                                                doctorId:
+                                                    widget.doctor.doctor!.sId!,
+                                                context: context,
+                                              ));
+                                        },
+                                        child: CustomTextFormField(
+                                          validator: (val) => isValid(
+                                              nameOFFiled: 'date', value: val),
+                                          // maxLines: 2,
+                                          enabled: false,
+                                          hintText: 'Select Date',
+                                          keyBoardType: TextInputType.name,
+                                          iconData: Icons.date_range,
+                                          textController: _dateController,
+                                        ),
+                                      ),
+                                      SizedBox(height: 2.h),
+                                      if (_dateController.text != '')
+                                        InkWell(
+                                          onTap: () {
+                                            final List<String> timeList = availableSlots(
+                                                timeArray: state
+                                                    .appointmentSlotByDateResponse
+                                                    .timeArray,
+                                                endTime: state
+                                                    .appointmentSlotByDateResponse
+                                                    .doctorTiming
+                                                    .endTime,
+                                                startTime: state
+                                                    .appointmentSlotByDateResponse
+                                                    .doctorTiming
+                                                    .startTime);
+                                            // await Future.delayed(Duration(seconds: 1));
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                        title: const Text(
+                                                          'Choose an available time slot',
+                                                          style: TextStyle(
+                                                            fontSize: 17,
+                                                          ),
+                                                        ),
+                                                        shape: const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            20))),
+                                                        content: SizedBox(
+                                                          width:
+                                                              double.maxFinite,
+                                                          child:
+                                                              ListView.builder(
+                                                            // physics: const NeverScrollableScrollPhysics(),
+                                                            itemCount:
+                                                                timeList.length,
+                                                            shrinkWrap: true,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return ListTile(
+                                                                title: Text(
+                                                                    timeList[
+                                                                        index]),
+                                                                onTap: () {
+                                                                  _timeController
+                                                                          .text =
+                                                                      timeList[
+                                                                          index];
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                              );
+                                                            },
+                                                          ),
+                                                        )));
+                                          },
+                                          child: CustomTextFormField(
+                                            validator: (val) => isValid(
+                                                nameOFFiled: 'time',
+                                                value: val),
+                                            // maxLines: 2,
+                                            enabled: false,
+                                            hintText: 'Select Time',
+                                            keyBoardType: TextInputType.name,
+                                            iconData: Icons.access_time,
+                                            textController: _timeController,
+                                          ),
+                                        ),
+                                      if (_dateController.text != '')
+                                        SizedBox(height: 2.h),
+                                      if (!isLoading)
+                                        InkWell(
+                                          onTap: () async {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              final isConfirmed = await Get.to(
+                                                  ConfirmAppointment(
+                                                patientName:
+                                                    _nameController.text,
+                                                age: _ageController.text,
+                                                date: _dateController.text,
+                                                time: _timeController.text,
+                                                doctorName:
+                                                    _doctorController.text,
+                                                fee: _feeController.text,
+                                                gender: _genderController.text,
+                                                phoneNumber:
+                                                    _phoneController.text,
+                                                reason: _reasonController.text,
+                                              ));
+                                              if (isConfirmed) {
+                                                final options = {
+                                                  'key':
+                                                      'rzp_test_NibFswO46i1XDM',
+                                                  'amount': int.parse(widget
+                                                          .doctor.doctor!.fee!
+                                                          .toString()) *
+                                                      100,
+                                                  'name': 'Appointment',
+                                                  'description': 'Dr. ' +
+                                                      widget
+                                                          .doctor.doctor!.name!,
+                                                  'prefill': {
+                                                    'contact': state
+                                                        .userLocalDataList[0]
+                                                        .phone,
+                                                    'email': state
+                                                        .userLocalDataList[0]
+                                                        .email,
+                                                  }
+                                                };
+                                                _razorpay.open(options);
+                                              }
+                                            } else {
+                                              if (_dateController
+                                                  .text.isEmpty) {
+                                                showSnackBar(
+                                                    text: 'Please select date',
+                                                    context: context);
+                                              } else if (_timeController
+                                                  .text.isEmpty) {
+                                                showSnackBar(
+                                                    text: 'Please select time',
+                                                    context: context);
+                                              }
+                                            }
+                                          },
+                                          child: CustomSubmitButton(
+                                              text: 'Book Appointment',
+                                              bgColor: Colors.redAccent),
+                                        )
+                                      else
+                                        CustomLoadingSubmitButton(
+                                            text: 'Book Appointment',
+                                            bgColor: Colors.redAccent)
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -380,6 +468,8 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
       initialDate = initialDate.add(const Duration(days: 1));
       if (days.contains(initialDate.weekday)) {
         return intitalDate(days);
+      } else {
+        return initialDate;
       }
     }
     return initialDate;
@@ -398,9 +488,12 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
         }
       },
       context: context,
-      initialDate: _dateController.text.isEmpty
-          ? DateTime.now()
-          : DateTime.parse(_dateController.text),
+      initialDate: _dateController.text.isNotEmpty
+          ? DateTime.parse(_dateController.text)
+          : DateTime.now().add(Duration(days: 1)),
+      // _dateController.text.isEmpty
+      //     ? DateTime.now()
+      //     : DateTime.parse(_dateController.text),
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 30)),
     );

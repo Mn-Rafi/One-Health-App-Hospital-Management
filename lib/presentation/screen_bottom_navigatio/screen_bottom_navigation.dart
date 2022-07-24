@@ -9,6 +9,7 @@ import 'package:one_health_hospital_app/presentation/screen_edit_profile/screen_
 import 'package:one_health_hospital_app/presentation/screen_home/screen_home.dart';
 import 'package:one_health_hospital_app/repositories/user_get_all_appoinments/user_get_all_appoinments.dart';
 import 'package:one_health_hospital_app/repositories/user_get_doctors_services/user_get_doctor_services.dart';
+import 'package:one_health_hospital_app/repositories/user_get_profile/user_get_profile_services.dart';
 import 'package:one_health_hospital_app/repositories/user_prescription_services/user_prescription_services.dart';
 import 'package:one_health_hospital_app/themedata.dart';
 
@@ -46,6 +47,7 @@ class _ScreenBottomNavigationState extends State<ScreenBottomNavigation> {
             RepositoryProvider.of<GetAllDepartments>(context),
             RepositoryProvider.of<AppointmentsServices>(context),
             RepositoryProvider.of<UserPrescriptionServices>(context),
+            RepositoryProvider.of<GetUserProfileServices>(context),
             context),
         child: Builder(builder: (context) {
           return BlocBuilder<HomepageBloc, HomepageState>(
@@ -60,8 +62,7 @@ class _ScreenBottomNavigationState extends State<ScreenBottomNavigation> {
                     children: <Widget>[
                       ScreenHome(),
                       ScreenAmbulanceBooking(),
-                      ScreenBloodBank(
-                      ),
+                      ScreenBloodBank(),
                       ScreenEditProfile(),
                     ],
                   ),

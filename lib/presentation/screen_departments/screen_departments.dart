@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:one_health_hospital_app/logic/bloc_departments_and_doctors/departmentsanddoctors_bloc.dart';
 import 'package:one_health_hospital_app/logic/models/all_departments_response_model.dart';
-import 'package:one_health_hospital_app/logic/models/all_doctor_response_model.dart';
-import 'package:one_health_hospital_app/logic/models/doctor_response_model.dart';
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_textformfield.dart';
 // import 'package:one_health_hospital_app/logic/models/doctor_response_model.dart';
 // import 'package:one_health_hospital_app/logic/models/all_doctor_response_model.dart';

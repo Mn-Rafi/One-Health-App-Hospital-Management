@@ -96,7 +96,7 @@ class GetprofiledataBloc
         }
       } catch (e) {
         if (e is DioError) {
-          emit(FetchDetailsErrorState(message: e.response!.data["message"]));
+          emit(FetchDetailsErrorState(message: e.toString()));
         }
 
         emit(FetchDetailsErrorState(message: e.toString().substring(0, 30)));

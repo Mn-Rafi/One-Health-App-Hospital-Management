@@ -22,12 +22,14 @@ class CustomTextField extends StatelessWidget {
   final String? validatorMessage;
   final Color? fillColor;
   final TextCapitalization capitalization;
+  final bool? enabled;
 
   CustomTextField(
       {required this.controller,
       required this.hintText,
       required this.textInputType,
       this.maxLine,
+      this.enabled,
       required this.focusNode,
       required this.nextNode,
       this.textInputAction,
@@ -82,6 +84,7 @@ class CustomTextField extends StatelessWidget {
           }
           return null;
         },
+        enabled: enabled ?? true,
         decoration: InputDecoration(
           hintText: hintText ?? '',
           filled: true,
