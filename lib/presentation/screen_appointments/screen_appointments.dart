@@ -64,21 +64,29 @@ class ScreenAppointments extends StatelessWidget {
                     ),
                   ],
                 ),
-                ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                          height: 20.h,
-                          child: Center(
-                              child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5.w),
-                            child: AppoinmentCard(
-                                width: true,
-                                appointment: scheduledList[index]!),
-                          )));
-                    },
-                    itemCount: scheduledList.length),
+                if (scheduledList.isNotEmpty)
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                            height: 20.h,
+                            child: Center(
+                                child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: AppoinmentCard(
+                                  width: true,
+                                  appointment: scheduledList[index]!),
+                            )));
+                      },
+                      itemCount: scheduledList.length),
+                if (scheduledList.isEmpty)
+                  Center(
+                    child: Text(
+                      'No Scheduled Appointments',
+                      style: theme.textTheme.headline6,
+                    ),
+                  ),
                 Row(
                   children: [
                     Padding(
@@ -90,21 +98,29 @@ class ScreenAppointments extends StatelessWidget {
                     ),
                   ],
                 ),
-                ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                          height: 20.h,
-                          child: Center(
-                              child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5.w),
-                            child: AppoinmentCard(
-                                width: true,
-                                appointment: completedList[index]!),
-                          )));
-                    },
-                    itemCount: completedList.length),
+                if (completedList.isNotEmpty)
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                            height: 20.h,
+                            child: Center(
+                                child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: AppoinmentCard(
+                                  width: true,
+                                  appointment: completedList[index]!),
+                            )));
+                      },
+                      itemCount: completedList.length),
+                if (completedList.isEmpty)
+                  Center(
+                    child: Text(
+                      'No Completed Appointments',
+                      style: theme.textTheme.headline6,
+                    ),
+                  ),
                 Row(
                   children: [
                     Padding(
@@ -116,21 +132,29 @@ class ScreenAppointments extends StatelessWidget {
                     ),
                   ],
                 ),
-                ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                          height: 20.h,
-                          child: Center(
-                              child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5.w),
-                            child: AppoinmentCard(
-                                width: true,
-                                appointment: cancelledList[index]!),
-                          )));
-                    },
-                    itemCount: cancelledList.length),
+                if (cancelledList.isNotEmpty)
+                  ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                            height: 20.h,
+                            child: Center(
+                                child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: AppoinmentCard(
+                                  width: true,
+                                  appointment: cancelledList[index]!),
+                            )));
+                      },
+                      itemCount: cancelledList.length),
+                if (cancelledList.isEmpty)
+                  Center(
+                    child: Text(
+                      'No Cancelled Appointments',
+                      style: theme.textTheme.headline6,
+                    ),
+                  ),
               ],
             ),
           ),

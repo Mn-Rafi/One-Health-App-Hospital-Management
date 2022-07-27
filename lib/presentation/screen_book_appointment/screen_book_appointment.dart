@@ -57,6 +57,7 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   final PageController pageViewController = PageController();
+  DateTime? appointmentDate;
 
   @override
   void initState() {
@@ -84,7 +85,7 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
                 "user": _nameController.text,
                 "doctor": widget.doctor.doctor!.name,
                 "status": "Scheduled",
-                "date": _dateController.text,
+                "date": appointmentDate.toString(),
                 "time": _timeController.text,
                 "fee": int.parse(widget.doctor.doctor!.fee.toString()),
                 "active": true,
@@ -97,6 +98,7 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
       log(appointmentResponse.toString());
       if (appointmentResponse.statusCode == 201) {
         isLoading = false;
+        showSnackBar(text: 'Succesfully booked appointment', context: context);
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => ScreenBottomNavigation(),
@@ -396,6 +398,10 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
                                                 reason: _reasonController.text,
                                               ));
                                               if (isConfirmed) {
+                                                appointmentDate =
+                                                    DateTime.parse(
+                                                        _dateController.text);
+                                                log('date: ${date.toString()}');
                                                 final options = {
                                                   'key':
                                                       'rzp_test_NibFswO46i1XDM',

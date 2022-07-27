@@ -25,33 +25,38 @@ class ScreenPrescriptions extends StatelessWidget {
             foregroundColor: Colors.black,
           ),
           body: SingleChildScrollView(
-              child: Column(
-            children: [
-              Column(
-                children: [
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return SizedBox(
-                            height: 20.h,
-                            child: Center(
-                                child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 5.w),
-                                    child: PrescriptionCard(
-                                      width: true,
-                                      prescription: prescriptionList![index],
-                                    ))));
-                      },
-                      itemCount: prescriptionList!.length),
-                ],
-              )
-            ],
-          )),
+              child: Column(children: [
+            prescriptionList!.isNotEmpty
+                ? Column(
+                    children: [
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                                height: 20.h,
+                                child: Center(
+                                    child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        child: PrescriptionCard(
+                                          width: true,
+                                          prescription:
+                                              prescriptionList![index],
+                                        ))));
+                          },
+                          itemCount: prescriptionList!.length),
+                    ],
+                  )
+                : Center(
+                    child: Text(
+                    'No prescriptions Found',
+                    style: theme.textTheme.headline6,
+                  )),
+          ])),
         ));
   }
 }

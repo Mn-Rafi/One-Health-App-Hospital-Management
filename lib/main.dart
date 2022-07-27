@@ -119,6 +119,7 @@ class MyApp extends StatelessWidget {
             )
           ],
           child: GetMaterialApp(
+            title: 'One Health Hospital',
             debugShowCheckedModeBanner: false,
             darkTheme: darkThemeData(context),
             themeMode: ThemeMode.system,

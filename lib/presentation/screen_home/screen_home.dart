@@ -384,13 +384,13 @@ class ScreenHome extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ScreenSearch(
-                              // department:
-                              //     state is HomePageFetchDoctorsSuccessState
-                              //         ? state.departmentList!
-                              //         : null,
-                              // isSearching: true,
-                              // currentIndex: 0,
-                            ),
+                                // department:
+                                //     state is HomePageFetchDoctorsSuccessState
+                                //         ? state.departmentList!
+                                //         : null,
+                                // isSearching: true,
+                                // currentIndex: 0,
+                                ),
                           ));
                         },
                       ),
@@ -521,7 +521,7 @@ class ScreenHome extends StatelessWidget {
                               height: 150.0,
                               child: Center(
                                 child: Text(
-                                  'No Scheduled Appointments Found',
+                                  'No Prescriptions Found',
                                   style: theme.textTheme.headline3?.copyWith(
                                       fontSize: 18, color: Colors.black),
                                 ),
@@ -536,7 +536,7 @@ class ScreenHome extends StatelessWidget {
                                 prescription: state.prescriptionList![index],
                               ),
                             );
-                          }
+                          } else {}
 
                           // return DoctorCard(doctor: );
                         }

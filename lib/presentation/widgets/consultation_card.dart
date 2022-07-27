@@ -23,7 +23,9 @@ class AppoinmentCard extends StatelessWidget {
   final Appointment appointment;
   final bool? width;
 
-  const AppoinmentCard({Key? key, required this.appointment, this.width = false}) : super(key: key);
+  const AppoinmentCard(
+      {Key? key, required this.appointment, this.width = false})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -112,7 +114,8 @@ class AppoinmentCard extends StatelessWidget {
                                   style: theme.textTheme.subtitle2!
                                       .copyWith(color: Colors.black)),
                               const SizedBox(height: 5.0),
-                              Text('Date : ${appointment.date}',
+                              Text(
+                                  'Date : ${appointment.date!.substring(0, 10)}',
                                   style: theme.textTheme.subtitle2!.copyWith(
                                       color: Colors.red, fontSize: 17)),
                             ],
@@ -202,7 +205,7 @@ class AppoinmentCardDetailed extends StatelessWidget {
                               style: theme.textTheme.subtitle2!
                                   .copyWith(color: Colors.black)),
                           const SizedBox(height: 5.0),
-                          Text('Date : ${appointment.date}',
+                          Text('Date : ${appointment.date!.substring(0, 10)}',
                               style: theme.textTheme.subtitle2!
                                   .copyWith(color: Colors.red, fontSize: 17)),
                           const SizedBox(height: 25.0),

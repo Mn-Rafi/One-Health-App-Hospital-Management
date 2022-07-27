@@ -47,7 +47,7 @@ class _ScreenBottomNavigationState extends State<ScreenBottomNavigation> {
             RepositoryProvider.of<GetAllDepartments>(context),
             RepositoryProvider.of<AppointmentsServices>(context),
             RepositoryProvider.of<UserPrescriptionServices>(context),
-            RepositoryProvider.of<GetUserProfileServices>(context),
+            // RepositoryProvider.of<GetUserProfileServices>(context),
             context),
         child: Builder(builder: (context) {
           return BlocBuilder<HomepageBloc, HomepageState>(

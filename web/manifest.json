@@ -1,11 +1,11 @@
 {
-    "name": "one_health_hospital_app",
-    "short_name": "one_health_hospital_app",
+    "name": "One Health Hospital",
+    "short_name": "One Health Hospital",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "An hospital management app with dummy contents",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

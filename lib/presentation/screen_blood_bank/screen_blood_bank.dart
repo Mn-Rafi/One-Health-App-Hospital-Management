@@ -23,6 +23,8 @@ class ScreenBloodBank extends StatefulWidget {
 class _ScreenBloodBankState extends State<ScreenBloodBank> {
   final TextEditingController _searchTextController = TextEditingController();
 
+  int searchTabIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -60,6 +62,53 @@ class _ScreenBloodBankState extends State<ScreenBloodBank> {
                     textController: _searchTextController),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(left: 5.w),
+              child: SizedBox(
+                height: 6.h,
+                child: ListView.builder(
+                  itemCount: bloodGroupsTab.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => InkWell(
+                    onTap: () {
+                      setState(() {
+                        // _searchTextController.text =
+                        //     index != 0 ? bloodGroupsTab[index] : '';
+                        searchTabIndex = index;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: index == searchTabIndex
+                              ? Colors.white
+                              : Colors.grey,
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 0.2,
+                          ),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            bloodGroupsTab[index],
+                            style: theme.textTheme.headline3?.copyWith(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.bold,
+                                color: index == searchTabIndex
+                                    ? Colors.black
+                                    : Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Expanded(
               child: StreamBuilder<List<BloodBankRegisterModel>?>(
                   stream: readDonorsData(),
@@ -67,7 +116,7 @@ class _ScreenBloodBankState extends State<ScreenBloodBank> {
                     if (snapshot.hasError) {
                       return Text("Something went wrong");
                     } else if (snapshot.hasData) {
-                      final donorDatas = snapshot.data!.where((element) {
+                      var donorDatas = snapshot.data!.where((element) {
                         if (element.name.toLowerCase().contains(
                             _searchTextController.text.toLowerCase())) {
                           return true;
@@ -82,6 +131,15 @@ class _ScreenBloodBankState extends State<ScreenBloodBank> {
                         }
                         return false;
                       });
+                      if (searchTabIndex != 0) {
+                        donorDatas = donorDatas.where((element) {
+                          if (element.bloodGroup.toLowerCase() ==
+                              bloodGroupsTab[searchTabIndex].toLowerCase()) {
+                            return true;
+                          }
+                          return false;
+                        }).toList();
+                      }
                       if (donorDatas.isEmpty) {
                         return Center(child: Text("No Donors found"));
                       }
@@ -237,6 +295,18 @@ class _ScreenBloodBankState extends State<ScreenBloodBank> {
 }
 
 List<String> bloodGroups = [
+  'A +ve',
+  'A -ve',
+  'B +ve',
+  'B -ve',
+  'AB +ve',
+  'AB -ve',
+  'O +ve',
+  'O -ve',
+];
+
+List<String> bloodGroupsTab = [
+  'All',
   'A +ve',
   'A -ve',
   'B +ve',

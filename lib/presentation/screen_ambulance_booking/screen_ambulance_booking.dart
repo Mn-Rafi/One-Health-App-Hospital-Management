@@ -126,7 +126,7 @@ class _ScreenAmbulanceBookingState extends State<ScreenAmbulanceBooking>
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text("Enter your details below",
+                      child: Text("Enter the details below",
                           style: theme.textTheme.headline3?.copyWith(
                             fontSize: 18,
                           )),

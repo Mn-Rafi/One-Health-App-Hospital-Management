@@ -39,21 +39,21 @@ class ScreenDoctorProfile extends StatelessWidget {
           Container(
             transform: Matrix4.translationValues(0.0, -20.0, 0.0),
             decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  blurRadius: 10.0,
-                  // spreadRadius: 0.0,
-                ),
-              ],
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white,
-                  Color(0xffE5e6e4),
-                ],
-              ),
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.black.withOpacity(0.5),
+              //     blurRadius: 10.0,
+              //     // spreadRadius: 0.0,
+              //   ),
+              // ],
+              // gradient: const LinearGradient(
+              //   begin: Alignment.topCenter,
+              //   end: Alignment.bottomCenter,
+              //   colors: [
+              //     Colors.white,
+              //     Color(0xffE5e6e4),
+              //   ],
+              // ),
               color: theme.cardColor,
               borderRadius: BorderRadius.circular(5.w),
             ),
@@ -163,22 +163,27 @@ class ScreenDoctorProfile extends StatelessWidget {
           SizedBox(
             height: 1.h,
           ),
-          Text('Fee',
-              style: theme.textTheme.bodyLarge!
-                  .copyWith(fontSize: 20.sp, color: Colors.black)),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 40.w, vertical: 1.h),
-            padding: const EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(1.w),
-              color: Colors.white,
-            ),
-            child: Text(
-              '₹${doctor.doctor!.fee}',
-              style: theme.textTheme.bodyLarge!
-                  .copyWith(fontSize: 13.sp, color: Colors.black),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Fee',
+                  style: theme.textTheme.bodyLarge!
+                      .copyWith(fontSize: 20.sp, color: Colors.black)),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                padding: const EdgeInsets.all(8.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(1.w),
+                  color: Colors.white,
+                ),
+                child: Text(
+                  '₹${doctor.doctor!.fee}',
+                  style: theme.textTheme.bodyLarge!
+                      .copyWith(fontSize: 13.sp, color: Colors.black),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             height: 3.h,
@@ -204,7 +209,6 @@ class ScreenDoctorProfile extends StatelessWidget {
     );
   }
 }
-
 
 List<String> checkDays(List<int> days) {
   List<String> daysString = [];
