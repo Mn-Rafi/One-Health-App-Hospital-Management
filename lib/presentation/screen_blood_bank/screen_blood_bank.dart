@@ -245,7 +245,7 @@ class _ScreenBloodBankState extends State<ScreenBloodBank> {
                     fontWeight: FontWeight.w600,
                     color: Colors.grey)),
             Text(
-                'Contact Numbers : \n${donor.contactNumberOne}, ${donor.contactNumberTwo}',
+                'Contact Numbers : \n${donor.contactNumberOne.substring(0, 3)}****${donor.contactNumberOne.substring(8, 9)}, ${donor.contactNumberTwo.substring(0, 3)}****${donor.contactNumberTwo.substring(8, 9)}',
                 // textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 15,

@@ -13,6 +13,7 @@ import 'package:one_health_hospital_app/presentation/customclasses_and_constants
 import 'package:one_health_hospital_app/presentation/customclasses_and_constants/custom_textformfield.dart';
 import 'package:one_health_hospital_app/presentation/screen_book_appointment/screen_confirm_booking.dart';
 import 'package:one_health_hospital_app/presentation/screen_bottom_navigatio/screen_bottom_navigation.dart';
+import 'package:one_health_hospital_app/repositories/api_utilities.dart';
 import 'package:one_health_hospital_app/repositories/local_storage/store_user_details.dart';
 import 'package:one_health_hospital_app/repositories/user_appointment_services/user_appointment_services.dart';
 import 'package:one_health_hospital_app/themedata.dart';
@@ -77,7 +78,7 @@ class _ScreenBookAppointmentState extends State<ScreenBookAppointment>
     try {
       isLoading = true;
       final Response appointmentResponse =
-          await dio.post('https://onehealthhospital.online/api/appointment/',
+          await dio.post('${ApiUtilities.baseUrl}/appointment/',
               data: {
                 "userId": userData!.id,
                 "doctorId": widget.doctor.doctor!.sId,

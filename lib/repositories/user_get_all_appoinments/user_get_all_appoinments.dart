@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:one_health_hospital_app/repositories/api_utilities.dart';
 // import 'package:one_health_hospital_app/repositories/api_utilities.dart';
 
 class AppointmentsServices {
@@ -12,11 +13,9 @@ class AppointmentsServices {
     log(token);
 
     dio.options.headers["auth-token"] = token;
-    // Response response = await dio.get(
-    //   'https://onehealthhospital.online/api/appointment/$id',
-    // );
+
     final response = await dio.get(
-      'https://onehealthhospital.online/api/appointment/$id',
+      '${ApiUtilities.baseUrl}/appointment/$id',
     );
     log(response.toString());
 
